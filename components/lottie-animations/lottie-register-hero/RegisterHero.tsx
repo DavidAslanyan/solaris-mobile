@@ -11,7 +11,7 @@ const RegisterHeroAnimation = ({ width = 200, height = 200 }: { width?: number, 
       loop
       style={{
         width: width,
-        height: height,
+        height: height
       }}
     />
   </View>

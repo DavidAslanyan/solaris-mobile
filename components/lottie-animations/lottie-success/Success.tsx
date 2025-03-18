@@ -1,12 +1,20 @@
-import Lottie from "lottie-react";
+import LottieView from 'lottie-react-native';
 import lottie from './success.json';
 import { View } from "react-native";
 
 
-const SuccessAnimation = () => {
+const SuccessAnimation = ({ width = 200, height = 200 }: { width?: number, height?: number }) => {
   return (
   <View className="w-full max-w-[20rem]">
-    <Lottie animationData={lottie} loop={false} />
+    <LottieView 
+     source={lottie}
+     autoPlay
+     loop
+     style={{
+       width: width,
+       height: height
+     }}
+    />
   </View>
   );
 };

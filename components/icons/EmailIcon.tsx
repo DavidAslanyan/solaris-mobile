@@ -24,16 +24,16 @@ const EmailIcon = ({
         <Path
           d="M3 5H21V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17V5Z"
           stroke={color}
-          strokeWidth="2.5"
+          strokeWidth="1"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <Path
           d="M3 5L12 14L21 5"
           stroke={color}
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </G>
       <Defs>
