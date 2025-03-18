@@ -11,7 +11,7 @@ export const getUser = async () => {
     const response = await axios.get(`${API_URLS.AUTH}`);
     return response.data;
   } catch (error) {
-    console.error("There was an error fetching the data:", error);
+    console.log("There was an error fetching the data:", error);
     throw error; 
   }
 }
@@ -22,7 +22,7 @@ export const getUsersList = async () => {
     const response = await axios.get(`${API_URLS.LIST}`);
     return response.data;
   } catch (error) {
-    console.error("There was an error fetching the data:", error);
+    console.log("There was an error fetching the data:", error);
     throw error; 
   }
 }
@@ -33,7 +33,7 @@ export const postUser = async (data: RegisterUserFormType) => {
     const response = await axios.post(`${API_URLS.REGISTER}`, data);
     return response.data;
   } catch(error) {
-    console.error("Failed to register the user:", error);
+    console.log("Failed to register the user:", error);
     throw error; 
   }
 }
@@ -42,15 +42,15 @@ export const postUser = async (data: RegisterUserFormType) => {
 export const loginUser = async (data: LoginUserFormType) => {
   try {
     const response = await axios.post(`${API_URLS.LOGIN}`, data);
-    if (response.data.data.tokens) {
-      // saveTokensInSecureStorage(
-      //   response.data.data.tokens.accessToken,
-      //   response.data.data.tokens.refreshToken
-      // );
-    }
+    // if (response.data.data.tokens) {
+    //   saveTokensInSecureStorage(
+    //     response.data.data.tokens.accessToken,
+    //     response.data.data.tokens.refreshToken
+    //   );
+    // }
     return response.data;
   } catch(error) {
-    console.error("Failed to login the user:", error);
+    console.log("Failed to login the user:", error);
     throw error; 
   }
 }
@@ -59,7 +59,7 @@ export const logoutUser = async () => {
   try {
     await axios.post(`${API_URLS.LOGOUT}`);
   } catch(error) {
-    console.error("Failed to logout the user:", error);
+    console.log("Failed to logout the user:", error);
     throw error; 
   }
 }
@@ -70,7 +70,7 @@ export const updateUser = async ({ userId, data }: { userId: string; data: Updat
     const response = await axios.patch(`${API_URLS.AUTH_UPDATE}/${userId}`, data);
     return response.data;
   } catch(error) {
-    console.error("Failed to update the user:", error);
+    console.log("Failed to update the user:", error);
     throw error; 
   }
 }
@@ -81,7 +81,7 @@ export const changeDifficulty = async ({ level }: { level: DifficultyLevel | str
     const response = await axios.patch(`${API_URLS.CHANGE_DIFFICULTY}`, { level });
     return response.data;
   } catch(error) {
-    console.error("Failed to udpate difficulty:", error);
+    console.log("Failed to udpate difficulty:", error);
     throw error; 
   }
 }
@@ -91,7 +91,7 @@ export const googleLogin = async ({ id }: { id: string }) => {
     const response = await axios.post(`${API_URLS.GOOGLE_LOGIN}`, { id });
     return response.data;
   } catch(error) {
-    console.error("Failed to sign in via Google:", error);
+    console.log("Failed to sign in via Google:", error);
     throw error; 
   }
 } 
