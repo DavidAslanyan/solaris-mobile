@@ -17,6 +17,9 @@ import ErrorMessage from '@/components/error-message';
 import { ResponseEnum } from '@/utilities/enums/response.enum';
 import CheckedAnimation from '@/components/lottie-animations/lottie-checked';
 import ErrorAnimation from '@/components/lottie-animations/lottie-error';
+import { registerUserMutation } from '../services/queries/auth.query';
+import { RegisterUserFormType } from '@/utilities/types/auth.type';
+import { HttpStatusCode } from '@/utilities/enums/status-codes.enum';
 
 
 
@@ -35,7 +38,6 @@ const Register = () => {
   const [difficultyLevel, setDifficultyLevel] = useState<DifficultyLevel>(DifficultyLevel.EASY);
   const [avatar, setAvatar] = useState<string>(AVATARS.male1);
   const [errorMessage, setErrorMessage] = useState("");
-
   const [modalVisible, setModalVisible] = useState<ResponseEnum |null>(null);
 
   const handleFormChange = (name: string, value: string) => {
@@ -43,6 +45,24 @@ const Register = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const { mutate: registerUser } = registerUserMutation();
+  const handleRegister = (formData: RegisterUserFormType) => {
+    registerUser(formData, {
+      onSuccess: (data) => {
+        if (data?.status === HttpStatusCode.CREATED) {
+          setModalVisible(ResponseEnum.SUCCESS);
+        } else {
+          setModalVisible(ResponseEnum.FAIL);
+          setErrorMessage(data?.error);
+        }
+      },
+      onError: (error) => {
+        console.log("Error registering user:", error);
+        setModalVisible(ResponseEnum.FAIL);
+      },
+    });
   };
 
   const validateFirstStepInputs = (): boolean => {
@@ -80,8 +100,7 @@ const Register = () => {
     
     if (validateFirstStepInputs()) {
       const finalFormData = { ...formData, difficultyLevel, avatarUrl: avatar };
-      // handleRegister(finalFormData);
-      console.log("Success", finalFormData);
+      handleRegister(finalFormData);
     }
   }
 

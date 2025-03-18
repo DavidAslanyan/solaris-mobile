@@ -1,4 +1,4 @@
-export const BASE = "http://localhost:3000";
+export const BASE = "http://192.168.10.11:3000"; //192.168.10.255
 export const VERSION  = "api/v1";
 export const PROGRESS = "progress"
 
