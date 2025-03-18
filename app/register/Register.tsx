@@ -20,6 +20,7 @@ import ErrorAnimation from '@/components/lottie-animations/lottie-error';
 import { registerUserMutation } from '../services/queries/auth.query';
 import { RegisterUserFormType } from '@/utilities/types/auth.type';
 import { HttpStatusCode } from '@/utilities/enums/status-codes.enum';
+import Popup from '@/components/popup';
 
 
 
@@ -124,7 +125,6 @@ const Register = () => {
     <ThemeView style={styles.container}>
       <View style={styles.animationContainer}>
         <ThemeText weight='bold' size='2xl'>LOGO</ThemeText>
-        {/* <RegisterHeroAnimation width={250} height={250} /> */}
       </View>
       <ThemeText style={styles.title} size='lg' weight='bold'>
         {step === 0 ? "Become a member of our great community" : "One final step" }
@@ -213,35 +213,27 @@ const Register = () => {
         />
       </View>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible !== null}
-        onRequestClose={() => {
-          setModalVisible(null);
-        }}>
-          <ThemeView style={styles.centeredView}>
-            <View style={[styles.modalView, {
-              backgroundColor:  colorScheme === 'light' ? Colors.white : Colors.darkerBackgorund
-            }]}>
-              {modalVisible === ResponseEnum.SUCCESS
-              ?
-              <>
-              <CheckedAnimation />
-              <ThemeText size='lg' weight='semibold'>Welcome aboard, {formData.firstName}</ThemeText>
-              <ThemeText  style={styles.modalText}>Congrats, you successfully created your account. Now, let's login and jump right into action !</ThemeText>
-              <ButtonMain onPress={handleLoginPress} title='Login' />
-              </>
-              :
-              <>
-              <ErrorAnimation />
-              <ThemeText  style={styles.modalText}>Unfortunately, We could not create your profile</ThemeText>
-              <ButtonMain onPress={() => setModalVisible(null)} title='Try Again' />
-              </>
-              }
-            </View>
-          </ThemeView>
-        </Modal>
+      <Popup
+        isOpen={modalVisible !== null}
+        setIsOpen={setModalVisible}
+        >
+        {modalVisible === ResponseEnum.SUCCESS
+        ?
+          <>
+          <CheckedAnimation />
+          <ThemeText size='lg' weight='semibold'>Welcome aboard, {formData.firstName}</ThemeText>
+          <ThemeText  style={styles.modalText}>Congrats, you successfully created your account. Now, let's login and jump right into action!</ThemeText>
+          <ButtonMain onPress={handleLoginPress} title='Login' />
+          </>
+        :
+          <>
+          <ErrorAnimation width={120} height={120} />
+          <ThemeText  style={styles.modalText}>Failed to create user. {errorMessage}</ThemeText>
+          <ButtonMain onPress={() => setModalVisible(null)} title='Try Again' />
+          </>
+        }
+      </Popup>
+
     </ThemeView>
   )
 }

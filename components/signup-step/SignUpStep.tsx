@@ -144,7 +144,6 @@ const styles = StyleSheet.create({
   avatarText: {
     marginTop: 4,
     fontSize: 14,
-    color: Colors.secondary,
   },
   difficultyContainer: {
     flexDirection: 'row',

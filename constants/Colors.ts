@@ -25,5 +25,7 @@ export const Colors = {
   thirdly: "#D9D9D9",
   darkBackground: "#191C27",
   darkerBackgorund: "#10121a",
-  lightBackground: "#F0F0F0"
+  lightBackground: "#F0F0F0",
+  lowOpacityDark: "rgba(0, 0, 0, 0.27)",
+  lowOpacityWhite: "rgba(255, 255, 255, 0.39)"
 };
