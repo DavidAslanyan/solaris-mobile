@@ -10,7 +10,7 @@ export const getUserQuery = () => {
     retry: 2, 
     refetchOnWindowFocus: false, 
   });
-};
+}; 
 
 export const getUsersListQuery = () => {
   return useQuery({
