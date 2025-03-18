@@ -1,9 +1,10 @@
+import { Colors } from '@/constants/Colors';
 import React, { forwardRef } from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 type ButtonProps = {
   title: string;
-  onPress?: () => void;
+  onPress?: (arg: any) => void;
   disabled?: boolean;
 };
 
@@ -34,14 +35,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
+    transitionDuration: '3'
   },
   enabled: {
-    backgroundColor: '#007bff', // Primary color
-    borderColor: '#007bff',
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
   },
   disabled: {
-    backgroundColor: '#d3d3d3', // Disabled background color
-    borderColor: '#a9a9a9',
+    backgroundColor: Colors.secondary, 
+    borderColor: Colors.secondary,
   },
   text: {
     color: '#fff',

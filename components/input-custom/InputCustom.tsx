@@ -1,8 +1,9 @@
 import { Colors } from '@/constants/Colors';
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, useColorScheme } from 'react-native';
 import EyeOpenIcon from '../icons/EyeOpenIcon';
 import EyeClosedIcon from '../icons/EyeClosedIcon';
+import ThemeText from '../themes/theme-text';
 
 type InputProps = {
   label?: string;
@@ -34,26 +35,29 @@ const InputCustom: React.FC<InputProps> = ({
   disabled = false,
 }) => {
   const [visible, setVisible] = useState<boolean>(false);
+  const colorScheme = useColorScheme();
+  const themeColor = colorScheme === 'light' ? Colors.secondary : Colors.white;
 
+  
   return (
-    <View style={{ marginBottom: 10 }}>
+    <View style={{ marginVertical: 7 }}>
       {label && (
-        <Text style={{ fontWeight: 'bold', marginBottom: 5 }}>
-          {label} {required && '*'}
-        </Text>
+        <ThemeText weight='semibold'>
+          <>{label} {required && '*'}</>
+        </ThemeText>
       )}
 
-      <View style={{ position: 'relative' }}>
-        {icon && <View style={{ position: 'absolute', left: 10, top: 10 }}>{icon}</View>}
+      <View style={{ position: 'relative', paddingTop: 8 }}>
+        {icon && <View style={{ position: 'absolute', left: 10, top: 17 }}>{icon}</View>}
 
         {isPassword && (
           <TouchableOpacity
             onPress={() => setVisible(!visible)}
-            style={{ position: 'absolute', right: 10, top: 10, zIndex: 10 }}
+            style={{ position: 'absolute', right: 10, top: 18, zIndex: 10 }}
           >
             {visible
-            ? <EyeOpenIcon color={Colors.dark.background} />
-            : <EyeClosedIcon color={Colors.dark.background} />
+            ? <EyeOpenIcon width={24} height={24} color={themeColor} />
+            : <EyeClosedIcon width={24} height={24} color={themeColor} />
             }
           </TouchableOpacity>
         )}
@@ -71,11 +75,12 @@ const InputCustom: React.FC<InputProps> = ({
             paddingLeft: icon ? 40 : 10,
             paddingRight: isPassword ? 40 : 10,
             height: 45,
-            borderColor: Colors.light.text,
-            borderWidth: 2,
+            borderColor: error === "" ? themeColor : Colors.red,
+            borderWidth: 1,
             borderRadius: 5,
+            fontWeight: 'semibold',
             fontSize: 16,
-            color: Colors.light.text,
+            color: themeColor,
           }}
         />
       </View>

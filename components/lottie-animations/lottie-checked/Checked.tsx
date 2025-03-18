@@ -1,11 +1,19 @@
-import Lottie from "lottie-react";
+import LottieView from 'lottie-react-native';
 import lottie from './hero.json';
 import { View } from "react-native";
 
-const CheckedAnimation = ({ width = "max-w-[28rem]" }: { width?: string }) => {
+const CheckedAnimation = ({ width = 200, height = 200 }: { width?: number, height?: number }) => {
   return (
-  <View className={`w-full ${width}`}>
-    <Lottie animationData={lottie} loop={false}  />
+  <View>
+    <LottieView 
+      source={lottie}
+      autoPlay
+      loop={false}
+      style={{
+        width: width,
+        height: height
+      }}
+    />
   </View>
   );
 };
