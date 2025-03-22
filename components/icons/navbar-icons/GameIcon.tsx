@@ -1,5 +1,6 @@
-import { COLORS } from "@/app/utilities/constants/colors";
+import { Colors } from "@/constants/Colors";
 import React from "react";
+import Svg, { G, Path } from "react-native-svg";
 
 type IconProps = {
   width?: number;
@@ -10,19 +11,17 @@ type IconProps = {
 const GameIcon = ({
   width = 28,
   height = 28,
-  color = COLORS.secondary,
+  color = Colors.secondary,
 }: IconProps) => {
   return (
-    <svg
+    <Svg
       height={height}
       width={width}
-      version="1.1"
       id="_x32_"
-      xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512"
     >
-      <g>
-        <path
+      <G>
+        <Path
           fill={color}
           d="M511.275,335.864c-13.696-182.839-84.68-268.054-158.186-268.054c-55.32,0-73.124,39.474-97.088,39.474
      c-23.964,0-41.824-39.474-97.089-39.474c-73.505,0-144.49,85.216-158.186,268.054c-5.225,57.878,18.231,94.731,56.036,105.86
@@ -36,8 +35,8 @@ const GameIcon = ({
       M425.642,257.768c-11.854,0-21.469-9.596-21.469-21.46c0-11.855,9.615-21.461,21.469-21.461c11.865,0,21.469,9.606,21.469,21.461
      C447.111,248.172,437.507,257.768,425.642,257.768z"
         />
-      </g>
-    </svg>
+      </G>
+    </Svg>
   );
 };
 
