@@ -15,6 +15,8 @@ import SettingsIcon from '../icons/profile-icons/SettingsIcon';
 import { Colors } from '@/constants/Colors';
 import SearchIcon from '../icons/navbar-icons/SearchIcon';
 import CloseIcon from '../icons/CloseIcon';
+import Logo from '../logo';
+import Avatar from '../avatar';
 
 type AnimatedHeaderProps = {
   inputText: string,
@@ -38,13 +40,13 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
   const inputWidth = useSharedValue(screenWidth * 0.9);
   const contentTranslateY = useSharedValue(0);
   const contentTopHeight = -40; 
-  const contentHeight =  screenWidth < 380 ? 10 : 20; 
+  const contentHeight =  screenWidth < 380 ? 10 : 6; 
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
       if (event.contentOffset.y > 0) {
         translateY.value = withTiming(-40, { duration: 300, easing: Easing.out(Easing.quad) });
-        inputWidth.value = withTiming(screenWidth * 0.75, { duration: 300, easing: Easing.out(Easing.quad) });
+        inputWidth.value = withTiming(screenWidth * 0.70, { duration: 300, easing: Easing.out(Easing.quad) });
         contentTranslateY.value = withTiming(contentHeight, { duration: 300, easing: Easing.out(Easing.quad) });
       } else {
         translateY.value = withTiming(0, { duration: 300, easing: Easing.out(Easing.quad) });
@@ -83,18 +85,21 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
      <View style={styles.header}>
         <Animated.View style={[styles.content, contentContainerStyle]}>
           <Animated.View style={[styles.logoWrapper, titleStyle]}>
-            <ThemeText>LOGO</ThemeText>
+            <Logo />
           </Animated.View>
-          <TouchableOpacity>
-            <SettingsIcon />
-          </TouchableOpacity>
+          <View style={styles.tabs}>
+            <Avatar />
+            <TouchableOpacity style={styles.settingsTab}>
+              <SettingsIcon color={Colors.white} />
+            </TouchableOpacity>
+          </View>
         </Animated.View>
       </View>
 
       <Animated.View style={[styles.inputContainer, inputContainerStyle]}>
         <View style={styles.searchContainer}>
           <View>
-            <View>
+            <View style={styles.searchContent}>
               <TouchableOpacity style={styles.searchWrapper}>
                 <SearchIcon width={22} height={22} />
               </TouchableOpacity>
@@ -103,7 +108,8 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
                 style={styles.inputText}
                 value={inputText}
                 onChangeText={handleTextChange}
-                placeholder={'searchEvent'}>
+                placeholder="Search terms"
+              >
               </TextInput>
             </View>
             <View style={styles.inputRightContent}>
@@ -166,7 +172,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     position: 'absolute',
-    top: '11%',
+    top: '13%',
     left: 0,
     right: 0,
     alignItems: 'center',
@@ -182,10 +188,17 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     position: 'absolute',
-    top: '1%',
-    left: '0.1%',
-    width: '109%',
+    top: '5%',
+    width: '100%',
+    left: "5%",
     zIndex: 15,
+    backgroundColor: Colors.white,
+    borderRadius: 25
+  },
+  searchContent: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingVertical: '4%',
   },
   searchWrapper: {
     paddingLeft: '3%',
@@ -200,12 +213,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
-    right: '2%',
+    right: '3%',
+    top: '15%'
   },
   scrollContent: {
     paddingTop: contentTopHeight,
     alignItems: 'center',
   },
+  tabs: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  settingsTab: {
+    paddingRight: '3%'
+  }
 })
 
 export default AnimatedHeader;
