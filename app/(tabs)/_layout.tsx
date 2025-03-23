@@ -21,11 +21,11 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors.primary,
         headerShown: false,
         tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
         tabBarStyle: {
           paddingTop: 20,
-          borderRadius: 10,
-          height: 110
+          borderRadius: 30,
+          height: 100,
+          backgroundColor: Colors.secondary
         }
       }}>
       <Tabs.Screen
