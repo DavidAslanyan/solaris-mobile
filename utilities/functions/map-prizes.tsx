@@ -1,4 +1,4 @@
-import Prize1Icon from "@/app/components/icons/prizes/Prize1Icon";
+import Prize1Icon from "@/components/icons/prizes/Prize1Icon"
 
 export const determinePrize = (points?: number) => {
   if (!points) {
@@ -65,7 +65,7 @@ export const PRIZES = [
   // Sapphire Tier (Final Prestige)
   { title: "Sapphire Sovereign", points: 42000, icon: <Prize1Icon color="#0F52BA" /> },
   { title: "Sapphire Emperor", points: 46200, icon: <Prize1Icon color="#0F52BA" /> },
-  { title: "Sapphire Supreme Overlord", points: 50500, icon: <Prize1Icon color="#0F52BA" /> },
+  { title: "Sapphire Supreme", points: 50500, icon: <Prize1Icon color="#0F52BA" /> },
 
   // Ultimate Max Level
   { title: "Celestial God", points: 52500, icon: <Prize1Icon color="#E0115F" /> }, // Royal Pink for Ultimate

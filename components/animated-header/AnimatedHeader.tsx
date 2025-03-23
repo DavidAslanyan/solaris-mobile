@@ -40,7 +40,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
   const inputWidth = useSharedValue(screenWidth * 0.9);
   const contentTranslateY = useSharedValue(0);
   const contentTopHeight = -40; 
-  const contentHeight =  screenWidth < 380 ? 10 : 6; 
+  const contentHeight =  screenWidth < 380 ? 3 : 6; 
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -109,6 +109,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
                 value={inputText}
                 onChangeText={handleTextChange}
                 placeholder="Search terms"
+                placeholderTextColor={Colors.lowOpacityDark}
               >
               </TextInput>
             </View>
@@ -193,6 +194,10 @@ const styles = StyleSheet.create({
     left: "5%",
     zIndex: 15,
     backgroundColor: Colors.white,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 1.5,
     borderRadius: 25
   },
   searchContent: {
@@ -206,7 +211,7 @@ const styles = StyleSheet.create({
   inputText: {
     paddingLeft: 12,
     width: '60%',
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
   },
   inputRightContent: {
     gap: '3%',
@@ -214,7 +219,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     right: '3%',
-    top: '15%'
+    top: '20%'
   },
   scrollContent: {
     paddingTop: contentTopHeight,

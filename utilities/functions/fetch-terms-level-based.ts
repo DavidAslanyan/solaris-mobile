@@ -1,7 +1,7 @@
 import { DifficultyLevel } from "../enums/difficulty-level.enum"
-import easyTermsData from "../../data/easy-terms.json";
-import mediumTermsData from "../../data/medium-terms.json";
-import hardTermsData from "../../data/hard-terms.json";
+import easyTermsData from "@/app/data/easy-terms.json";
+import mediumTermsData from "@/app/data/medium-terms.json";
+import hardTermsData from "@/app/data/hard-terms.json";
 
 
 export const fetchTermsLevelBased = (difficulty?: DifficultyLevel) => {

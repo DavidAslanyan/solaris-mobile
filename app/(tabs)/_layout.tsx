@@ -1,13 +1,10 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform, View } from 'react-native';
 import { HapticTab } from '@/components/HapticTab';
-import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import HomeIcon from '@/components/icons/navbar-icons/HomeIcon';
 import ShopIcon from '@/components/icons/navbar-icons/ShopIcon';
-import ButtonStudy from '@/components/buttons/button-study/ButtonStudy';
 import TabStudy from '@/components/buttons/tab-study/TabStudy';
 import GameIcon from '@/components/icons/navbar-icons/GameIcon';
 import ProfileIcon from '@/components/icons/navbar-icons/ProfileIcon';
@@ -23,9 +20,9 @@ export default function TabLayout() {
         tabBarButton: HapticTab,
         tabBarStyle: {
           paddingTop: 20,
-          borderRadius: 30,
+          // borderRadius: 30,
           height: 100,
-          backgroundColor: Colors.secondary
+          backgroundColor: Colors.secondary,
         }
       }}>
       <Tabs.Screen
@@ -48,7 +45,7 @@ export default function TabLayout() {
         name="terms"
         options={{
           title: '',
-          tabBarIcon: ({ color }) => <View style={{position: 'relative', left: 10}}><TabStudy /></View>,
+          tabBarIcon: ({ color }) => <TabStudy />,
         }}
       />
 

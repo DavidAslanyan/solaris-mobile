@@ -25,8 +25,8 @@ const ButtonStudy = forwardRef<typeof TouchableOpacity, ButtonStudyProps>(({ tit
   } else if (size === "medium") {
     width = 100;
     height = 100;
-    top = 25;
-    left = 12;
+    top = -5;
+    left = -28;
     fontSize = 16;
   } else {
     width = 120;

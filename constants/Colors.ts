@@ -22,8 +22,11 @@ export const Colors = {
   white: "#ffff",
   primary: "#20C997",
   secondary: "#222222",
+  backPrimary: "#F0F0F0", 
+  orange: "#fab533",
   thirdly: "#D9D9D9",
-  darkBackground: "#191C27",
+  darkBackground: "rgb(31, 32, 32)",
+  inacitveBackground: "rgb(71, 74, 74)", //#191C27
   darkerBackgorund: "#10121a",
   lightBackground: "#F0F0F0",
   lowOpacityDark: "rgba(0, 0, 0, 0.27)",
