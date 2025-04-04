@@ -17,6 +17,7 @@ import ButtonStudy from '@/components/buttons/button-study';
 import ProgressBar from '@/components/progress-bar/ProgressBar';
 import LevelMap from '@/components/level-map/LevelMap';
 import Search from '../search';
+import History from '../history';
 
 
 export default function HomeScreen() {
@@ -52,7 +53,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <Search />
+    <History />
     // <GestureHandlerRootView>
     //   <ThemedView style={styles.container}>
     //   <AnimatedHeader
