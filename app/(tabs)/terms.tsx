@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Terms = () => {
+const terms = () => {
   return (
     <View>
-      <Text>Terms</Text>
+      <Text>terms</Text>
     </View>
   )
 }
 
-export default Terms
+export default terms

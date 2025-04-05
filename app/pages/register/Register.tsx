@@ -17,7 +17,7 @@ import ErrorMessage from '@/components/error-message';
 import { ResponseEnum } from '@/utilities/enums/response.enum';
 import CheckedAnimation from '@/components/lottie-animations/lottie-checked';
 import ErrorAnimation from '@/components/lottie-animations/lottie-error';
-import { registerUserMutation } from '../services/queries/auth.query';
+import { registerUserMutation } from '../../services/queries/auth.query';
 import { RegisterUserFormType } from '@/utilities/types/auth.type';
 import { HttpStatusCode } from '@/utilities/enums/status-codes.enum';
 import Popup from '@/components/popup';
@@ -117,7 +117,7 @@ const Register = () => {
 
   const handleLoginPress = () => {
     setModalVisible(null);
-    router.push('/login');
+    router.push('/pages/login');
   }
 
   
@@ -204,7 +204,7 @@ const Register = () => {
       <ErrorMessage>{errorMessage}</ErrorMessage>
       }
 
-      <ThemeText style={styles.haveAccountText}>Already have an account? <Link style={styles.linkText} href={'/login'}>Login</Link></ThemeText>
+      <ThemeText style={styles.haveAccountText}>Already have an account? <Link style={styles.linkText} href={'/pages/login'}>Login</Link></ThemeText>
  
       <View style={styles.buttonConainer}>
         <ButtonMain 

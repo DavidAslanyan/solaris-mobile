@@ -1,16 +1,16 @@
-import { Tabs } from 'expo-router';
+import { Tabs, useRouter } from 'expo-router';
 import React from 'react';
 import { HapticTab } from '@/components/HapticTab';
 import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import HomeIcon from '@/components/icons/navbar-icons/HomeIcon';
 import ShopIcon from '@/components/icons/navbar-icons/ShopIcon';
 import TabStudy from '@/components/buttons/tab-study/TabStudy';
 import GameIcon from '@/components/icons/navbar-icons/GameIcon';
 import ProfileIcon from '@/components/icons/navbar-icons/ProfileIcon';
+import { TouchableOpacity } from 'react-native';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const router = useRouter();
 
   return (
     <Tabs
@@ -20,7 +20,6 @@ export default function TabLayout() {
         tabBarButton: HapticTab,
         tabBarStyle: {
           paddingTop: 20,
-          // borderRadius: 30,
           height: 100,
           backgroundColor: Colors.secondary,
         }
@@ -45,7 +44,7 @@ export default function TabLayout() {
         name="terms"
         options={{
           title: '',
-          tabBarIcon: ({ color }) => <TabStudy />,
+          tabBarIcon: () => <TouchableOpacity onPress={() => router.push('/pages/terms')}><TabStudy /></TouchableOpacity>,
         }}
       />
 

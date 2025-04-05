@@ -1,10 +1,11 @@
 import { Colors } from '@/constants/Colors';
 import React, { forwardRef } from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import * as Haptics from 'expo-haptics';
 
 type ButtonProps = {
   title: string;
-  onPress?: (arg: any) => void;
+  onPress?: (arg?: any) => void;
   disabled?: boolean;
 };
 
@@ -14,10 +15,17 @@ const ButtonMain = forwardRef<typeof TouchableOpacity, ButtonProps>(({
   disabled = false,
   ...props 
 }, ref) => {
+
+  const handleButtonPress = () => {
+    onPress && onPress()
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  }
+
+
   return (
     <TouchableOpacity 
       style={[styles.button, disabled ? styles.disabled : styles.enabled]}
-      onPress={onPress}
+      onPress={handleButtonPress}
       disabled={disabled}
       {...props}
     >
