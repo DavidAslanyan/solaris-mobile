@@ -115,7 +115,7 @@ export default function HomeScreen() {
               </View>
 
               <View style={styles.triangleButton}>
-                <ButtonStudy url='' size='medium' title='Study' />
+                <ButtonStudy size='medium' title='Study' />
               </View>
             </View>
           </DashboardContainer>

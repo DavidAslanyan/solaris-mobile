@@ -1,19 +1,17 @@
 import React, { forwardRef } from "react";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import TriangleIcon from "../../icons/TriangleIcon";
 import { Colors } from "@/constants/Colors";
+import { router } from "expo-router";
+import * as Haptics from 'expo-haptics';
 
 type ButtonStudyProps = {
   title: string;
-  url: string;
   size?: "small" | "large" | "medium";
   style?: object;
 };
 
-const ButtonStudy = forwardRef<typeof TouchableOpacity, ButtonStudyProps>(({ title, url, size = "large", style, ...props }, ref) => {
-  const navigation = useNavigation();
-
+const ButtonStudy = forwardRef<typeof TouchableOpacity, ButtonStudyProps>(({ title, size = "large", style, ...props }, ref) => {
   let width: number, height: number, top: number, left: number, fontSize: number;
 
   if (size === "small") {
@@ -39,7 +37,10 @@ const ButtonStudy = forwardRef<typeof TouchableOpacity, ButtonStudyProps>(({ tit
   return (
     <TouchableOpacity
       style={[styles.container, style]}
-      onPress={() => navigation.navigate(url as never)}
+      onPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        router.push('/pages/terms');
+      }}
       {...props}
     >
       <View style={[styles.triangleWrapper, { width, height }]}> 

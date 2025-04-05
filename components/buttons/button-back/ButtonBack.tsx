@@ -1,12 +1,44 @@
-import { View, Text } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
+import ArrowIcon from '@/components/icons/ArrowIcon';
+import ThemeText from '@/components/themes/theme-text';
+import { useRouter } from 'expo-router';
+import * as Haptics from 'expo-haptics';
 
-const ButtonBack = () => {
+type ButtonBackProps = {
+  text?: string;
+}
+
+const ButtonBack: React.FC<ButtonBackProps> = ({
+  text = ""
+}) => {
+  const router = useRouter();
+
+  const handleBackPress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    router.back();
+  }
+
   return (
-    <View>
-      <Text>ButtonBack</Text>
-    </View>
+    <TouchableOpacity onPress={handleBackPress} style={styles.button}>
+      <View style={styles.arrow}>
+        <ArrowIcon width={32} height={32} />
+      </View>
+      <ThemeText size='lg' weight='semibold'>{text}</ThemeText>
+    </TouchableOpacity>
   )
 }
+
+const styles = StyleSheet.create({
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    top: '10%'
+  },
+  arrow: {
+    transform: [{ rotate: '90deg' }]
+  }
+})
 
 export default ButtonBack;
