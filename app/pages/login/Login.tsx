@@ -13,7 +13,7 @@ import ErrorMessage from '@/components/error-message';
 import ButtonMain from '@/components/buttons/button-main';
 import { Link, router, useRouter } from 'expo-router';
 import ErrorAnimation from '@/components/lottie-animations/lottie-error';
-import { loginUserMutation } from '../services/queries/auth.query';
+import { loginUserMutation } from '../../services/queries/auth.query';
 import { HttpStatusCode } from '@/utilities/enums/status-codes.enum';
 import Popup from '@/components/popup';
 
@@ -118,7 +118,7 @@ const Login = () => {
       <ErrorMessage>{errorMessage}</ErrorMessage>
       }
 
-      <ThemeText style={styles.haveAccountText}>Don't have an account? <Link style={styles.linkText} href={'/register'}>Sign Up</Link></ThemeText>
+      <ThemeText style={styles.haveAccountText}>Don't have an account? <Link style={styles.linkText} href={'/pages/register'}>Sign Up</Link></ThemeText>
  
       <View style={styles.buttonConainer}>
         <ButtonMain 
