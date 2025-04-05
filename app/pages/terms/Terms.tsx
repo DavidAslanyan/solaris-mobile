@@ -11,6 +11,7 @@ import studyHero from '@/components/lottie-animations/study-hero.json';
 import ButtonMain from '@/components/buttons/button-main';
 import Stopwatch from '@/components/stopwatch/Stopwatch';
 import TermSwiper from '@/components/term-swiper';
+import ButtonBack from '@/components/buttons/button-back';
 
 
 const Terms = () => {
@@ -41,6 +42,7 @@ const Terms = () => {
   if (!gameLive) {
     return (
       <ThemedView style={styles.container}>
+        <ButtonBack text='Back' />
         <View style={styles.termsContainer}>
           <View>
             <ThemeText size='xl' weight='bold'>Terms you are going to learn today</ThemeText>
@@ -64,6 +66,7 @@ const Terms = () => {
   
   return (
     <ThemedView style={styles.container}>
+      <ButtonBack text='Back' />
       <View style={styles.stopWatch}>
         <Stopwatch />
       </View>
