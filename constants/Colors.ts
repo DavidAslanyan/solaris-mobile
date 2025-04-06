@@ -28,7 +28,7 @@ export const Colors = {
   thirdly: "#D9D9D9",
   darkThirdly: "#626262",
   darkBackground: "rgb(31, 32, 32)",
-  inacitveBackground: "rgb(71, 74, 74)", //#191C27
+  inacitveBackground: "rgb(71, 74, 74)", 
   darkerBackgorund: "#10121a",
   lightBackground: "#F0F0F0",
   lowOpacityDark: "rgba(0, 0, 0, 0.27)",
