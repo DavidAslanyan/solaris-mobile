@@ -1,6 +1,5 @@
 import { View, StyleSheet } from 'react-native'
 import React, { Fragment, useMemo, useState } from 'react'
-import { getUserQuery } from '@/app/services/queries/auth.query';
 import { DifficultyLevel } from '@/utilities/enums/difficulty-level.enum';
 import { fetchTermsLevelBased } from '@/utilities/functions/fetch-terms-level-based';
 import { PROGRESS_POINTS } from '@/constants/global-data';
