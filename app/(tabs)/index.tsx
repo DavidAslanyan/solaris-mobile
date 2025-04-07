@@ -16,6 +16,7 @@ import { ThemedView } from '@/components/ThemedView';
 import ButtonStudy from '@/components/buttons/button-study';
 import ProgressBar from '@/components/progress-bar/ProgressBar';
 import LevelMap from '@/components/level-map/LevelMap';
+import Profile from './profile';
 
 
 export default function HomeScreen() {
