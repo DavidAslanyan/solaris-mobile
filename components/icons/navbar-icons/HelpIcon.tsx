@@ -1,5 +1,6 @@
-import { COLORS } from "@/app/utilities/constants/colors";
-import React from "react";
+import { Colors } from "@/constants/Colors";
+import Svg, { Path } from "react-native-svg";
+
 
 type IconProps = {
   width?: number;
@@ -10,36 +11,35 @@ type IconProps = {
 const HelpIcon = ({
   width = 28,
   height = 28,
-  color = COLORS.secondary,
+  color = Colors.secondary,
 }: IconProps) => {
   return (
-    <svg
+    <Svg
       width={width}
       height={height}
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
     >
-      <path
+      <Path
         d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
         stroke={color}
         strokeWidth="2"
       />
-      <path
+      <Path
         d="M10.5 8.67709C10.8665 8.26188 11.4027 8 12 8C13.1046 8 14 8.89543 14 10C14 10.9337 13.3601 11.718 12.4949 11.9383C12.2273 12.0064 12 12.2239 12 12.5V12.5V13"
         stroke={color}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
+      <Path
         d="M12 16H12.01"
         stroke={color}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-    </svg>
+    </Svg>
   );
 };
 
