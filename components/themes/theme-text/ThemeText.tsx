@@ -1,6 +1,7 @@
 import { Text, TextStyle, useColorScheme } from 'react-native';
 import React, { ReactNode } from 'react';
 import { Colors } from '@/constants/Colors';
+import { useAppTheme } from '@/app/contexts/ThemeContext';
 
 interface ThemeTextProps {
   children: string | number | ReactNode;
@@ -27,8 +28,8 @@ const weightMap: Record<NonNullable<ThemeTextProps['weight']>, TextStyle['fontWe
 };
 
 const ThemeText: React.FC<ThemeTextProps> = ({ children, style, size = 'base', weight = 'normal', capitalize = false }) => {
-  const colorScheme = useColorScheme();
-  const textColor = colorScheme === 'light' ? Colors.secondary : Colors.white;
+  const { theme } = useAppTheme();
+  const textColor = theme === 'light' ? Colors.secondary : Colors.white;
 
   return (
     <Text

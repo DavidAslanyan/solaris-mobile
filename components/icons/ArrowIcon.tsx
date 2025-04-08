@@ -1,6 +1,6 @@
+import { useAppTheme } from "@/app/contexts/ThemeContext";
 import { Colors } from "@/constants/Colors";
 import React from "react";
-import { useColorScheme } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
 type IconProps = {
@@ -13,8 +13,8 @@ const ArrowIcon = ({
   width = 28,
   height = 28,
 }: IconProps) => {
-  const colorScheme = useColorScheme();
-  const themeColor = colorScheme === 'light' ? Colors.secondary : Colors.white;
+  const { theme } = useAppTheme();
+  const themeColor = theme === 'light' ? Colors.secondary : Colors.white;
     
   return (
     <Svg
