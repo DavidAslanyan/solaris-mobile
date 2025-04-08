@@ -1,3 +1,4 @@
+import { useAppTheme } from "@/app/contexts/ThemeContext";
 import { Colors } from "@/constants/Colors";
 import React from "react";
 import { useColorScheme } from "react-native";
@@ -14,8 +15,8 @@ const ProgressIcon = ({
   height = 28,
   color = Colors.secondary,
 }: IconProps) => {
-  const colorScheme = useColorScheme();
-  color = colorScheme === "dark" ? Colors.white : Colors.secondary
+  const { theme } = useAppTheme();
+  color = theme == 'dark' ? Colors.white : Colors.secondary;
 
   return (
     <Svg

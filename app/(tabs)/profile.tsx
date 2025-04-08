@@ -2,6 +2,7 @@ import BellIcon from '@/components/icons/BellIcon';
 import BookIcon from '@/components/icons/BookIcon';
 import EditIcon from '@/components/icons/EditIcon';
 import GobletIcon from '@/components/icons/GobletIcon';
+import MoonIcon from '@/components/icons/MoonIcon';
 import ExitIcon from '@/components/icons/navbar-icons/ExitIcon';
 import HelpIcon from '@/components/icons/navbar-icons/HelpIcon';
 import PolicyIcon from '@/components/icons/navbar-icons/PolicyIcon';
@@ -14,7 +15,9 @@ import ThemeText from '@/components/themes/theme-text';
 import { Colors } from '@/constants/Colors';
 import { determinePrize } from '@/utilities/functions/map-prizes';
 import { selectFrameColor } from '@/utilities/functions/select-frame-color';
-import { View, Text, Image, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native'
+import { useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, useColorScheme, Appearance } from 'react-native'
+import { useAppTheme } from '../contexts/ThemeContext';
 
 const Profile = () => {
   const data = {
@@ -28,8 +31,16 @@ const Profile = () => {
 
   const { current } = determinePrize(data.points);
 
-  const theme = useColorScheme();
+  const { theme, toggleTheme } = useAppTheme();
+
+  const toggleAppTheme = () => {
+    toggleTheme();
+    setDarkMode(!darkMode);
+  }
+
   const iconColor = theme == 'dark' ? Colors.white : Colors.secondary;
+  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [notifications, setNotifications] = useState<boolean>(false);
 
   return (
     <ParallaxScrollView 
@@ -63,13 +74,13 @@ const Profile = () => {
       <View style={styles.content}>
         <View style={styles.nameContainer}>
           <ThemeText weight='bold' size='xl'>{data.username}</ThemeText>
-          <TouchableOpacity><EditIcon /></TouchableOpacity>
+          <TouchableOpacity><EditIcon color={iconColor} /></TouchableOpacity>
         </View>
 
         <View style={styles.progressContainer}>
           <ThemeText size='lg'>XP Points: <ThemeText weight='bold' size='lg'>{data.points}</ThemeText></ThemeText>
           <View style={styles.progress}>
-            <ProgressIcon width={20} height={20} />
+            <ProgressIcon color={iconColor} width={20} height={20} />
             <ThemeText size='lg'>Progress: <ThemeText weight='bold' size='lg'>{data.progress}</ThemeText></ThemeText>
           </View>
         </View>
@@ -81,6 +92,14 @@ const Profile = () => {
       </View>
 
       <View style={styles.list}>
+        <OptionTab
+          title='Dark Mode'
+          icon={<MoonIcon color={iconColor} />}
+          onPress={toggleTheme}
+          isSwitch={true}
+          switchVal={darkMode}
+          onSwitchChange={toggleAppTheme}
+        />
         <OptionTab
           title='Edit Profile'
           icon={<EditIcon color={iconColor} />}
@@ -100,6 +119,9 @@ const Profile = () => {
           title='Notifications'
           icon={<BellIcon color={iconColor} />}
           onPress={() => {}}
+          isSwitch={true}
+          switchVal={notifications}
+          onSwitchChange={() => setNotifications(!notifications)}
         />
         <OptionTab
           title='Select Difficulty'
