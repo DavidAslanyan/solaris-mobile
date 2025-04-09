@@ -17,6 +17,7 @@ import ButtonStudy from '@/components/buttons/button-study';
 import ProgressBar from '@/components/progress-bar/ProgressBar';
 import LevelMap from '@/components/level-map/LevelMap';
 import Profile from './profile';
+import EditProfile from '../pages/edit-profile';
 
 
 export default function HomeScreen() {
@@ -52,91 +53,92 @@ export default function HomeScreen() {
   }
 
   return (
-    <GestureHandlerRootView>
-      <ThemedView style={styles.container}>
-      <AnimatedHeader
-        inputText={inputText}
-        setInputText={setInputText}
-        handleTextChange={handleTextChange}
-        handleSearchSubmit={handleSearchSubmit}
-        >
-        <View style={styles.content}>
-          <DashboardContainer>
-            <View style={styles.welcomeBox}>
-              <View style={styles.leftBlock}>
-                <ThemeText size='2xl' weight='bold'>Hi, {userMappedData.username}</ThemeText>
-                <ThemeText size='md' weight='bold'>XP: {userMappedData.points}</ThemeText>
-                <View style={styles.dataBlock}>
-                  <CoinIcon />
-                  <ThemeText size='md'>Coins: <ThemeText size='lg' weight='bold'>{curCoins}</ThemeText></ThemeText>
-                </View>
-                <View style={styles.dataBlock}>
-                  <ProgressIcon />
-                  <ThemeText size='md'>Progress: <ThemeText size='lg' weight='bold'>{curProgress}</ThemeText></ThemeText>
-                </View>
-              </View>
+    <EditProfile />
+    // <GestureHandlerRootView>
+    //   <ThemedView style={styles.container}>
+    //   <AnimatedHeader
+    //     inputText={inputText}
+    //     setInputText={setInputText}
+    //     handleTextChange={handleTextChange}
+    //     handleSearchSubmit={handleSearchSubmit}
+    //     >
+    //     <View style={styles.content}>
+    //       <DashboardContainer>
+    //         <View style={styles.welcomeBox}>
+    //           <View style={styles.leftBlock}>
+    //             <ThemeText size='2xl' weight='bold'>Hi, {userMappedData.username}</ThemeText>
+    //             <ThemeText size='md' weight='bold'>XP: {userMappedData.points}</ThemeText>
+    //             <View style={styles.dataBlock}>
+    //               <CoinIcon />
+    //               <ThemeText size='md'>Coins: <ThemeText size='lg' weight='bold'>{curCoins}</ThemeText></ThemeText>
+    //             </View>
+    //             <View style={styles.dataBlock}>
+    //               <ProgressIcon />
+    //               <ThemeText size='md'>Progress: <ThemeText size='lg' weight='bold'>{curProgress}</ThemeText></ThemeText>
+    //             </View>
+    //           </View>
 
-              <View style={styles.rightBlock}>
-                {current.icon}
-                <ThemeText size='lg' weight='bold' style={styles.rang}>{current.title}</ThemeText>
-              </View>
-            </View>
-          </DashboardContainer>
+    //           <View style={styles.rightBlock}>
+    //             {current.icon}
+    //             <ThemeText size='lg' weight='bold' style={styles.rang}>{current.title}</ThemeText>
+    //           </View>
+    //         </View>
+    //       </DashboardContainer>
 
-          <View style={styles.progressBaContainer}>
-            <View style={styles.progressLeft}>
-              <ThemeText weight='semibold'>Keep going to earn your next prize!</ThemeText>
-              <ProgressBar maxWidth={290} progress={curPoints} limit={next.points} />
-              <ThemeText weight='semibold'>{curPoints} / {next.points} points</ThemeText>
-            </View>
+    //       <View style={styles.progressBaContainer}>
+    //         <View style={styles.progressLeft}>
+    //           <ThemeText weight='semibold'>Keep going to earn your next prize!</ThemeText>
+    //           <ProgressBar maxWidth={290} progress={curPoints} limit={next.points} />
+    //           <ThemeText weight='semibold'>{curPoints} / {next.points} points</ThemeText>
+    //         </View>
 
-            <View style={styles.progressRight}>
-              <ThemeText weight='semibold'>Next Prize</ThemeText>
-              {next.icon}
-              <ThemeText weight='bold' style={styles.rang}>{next.title}</ThemeText>
-            </View>
-          </View>
+    //         <View style={styles.progressRight}>
+    //           <ThemeText weight='semibold'>Next Prize</ThemeText>
+    //           {next.icon}
+    //           <ThemeText weight='bold' style={styles.rang}>{next.title}</ThemeText>
+    //         </View>
+    //       </View>
 
-          <DashboardContainer>
-            <View style={styles.termsBox}>
-              <View>
-                <ThemeText size='xl' weight='bold'>Your Next Terms to Learn</ThemeText>
-                {termData[0]?.term 
-                ? 
-                <View style={styles.termsList}>
-                  <ThemeText size='md'>1. {termData[0]?.term}</ThemeText>
-                  <ThemeText size='md'>2. {termData[1]?.term}</ThemeText>
-                  <ThemeText size='md'>3. {termData[2]?.term}</ThemeText>
-                  <ThemeText size='md'>4. {termData[3]?.term}</ThemeText>
-                  <ThemeText size='md'>and more...</ThemeText>
-                </View>
-                : 
-                <ThemeText>All terms completed</ThemeText>
-                }
-              </View>
+    //       <DashboardContainer>
+    //         <View style={styles.termsBox}>
+    //           <View>
+    //             <ThemeText size='xl' weight='bold'>Your Next Terms to Learn</ThemeText>
+    //             {termData[0]?.term 
+    //             ? 
+    //             <View style={styles.termsList}>
+    //               <ThemeText size='md'>1. {termData[0]?.term}</ThemeText>
+    //               <ThemeText size='md'>2. {termData[1]?.term}</ThemeText>
+    //               <ThemeText size='md'>3. {termData[2]?.term}</ThemeText>
+    //               <ThemeText size='md'>4. {termData[3]?.term}</ThemeText>
+    //               <ThemeText size='md'>and more...</ThemeText>
+    //             </View>
+    //             : 
+    //             <ThemeText>All terms completed</ThemeText>
+    //             }
+    //           </View>
 
-              <View style={styles.triangleButton}>
-                <ButtonStudy size='medium' title='Study' />
-              </View>
-            </View>
-          </DashboardContainer>
+    //           <View style={styles.triangleButton}>
+    //             <ButtonStudy size='medium' title='Study' />
+    //           </View>
+    //         </View>
+    //       </DashboardContainer>
 
-          <View style={styles.mapTitle}>
-            <ThemeText weight='bold' size='md'>See Your Journey</ThemeText>
-          </View>
+    //       <View style={styles.mapTitle}>
+    //         <ThemeText weight='bold' size='md'>See Your Journey</ThemeText>
+    //       </View>
     
-          <LevelMap progress={progressForMap  ?? 0} />
+    //       <LevelMap progress={progressForMap  ?? 0} />
 
-          <Link href="/pages/register">
-            <ThemeText>Register</ThemeText>
-          </Link>
-          <Link href="/pages/login"><ThemeText>Login</ThemeText></Link>
-          <View style={styles.block}></View>
-        </View>
+    //       <Link href="/pages/register">
+    //         <ThemeText>Register</ThemeText>
+    //       </Link>
+    //       <Link href="/pages/login"><ThemeText>Login</ThemeText></Link>
+    //       <View style={styles.block}></View>
+    //     </View>
 
-      </AnimatedHeader>
-      </ThemedView>
-    </GestureHandlerRootView>
+    //   </AnimatedHeader>
+    //   </ThemedView>
+    // </GestureHandlerRootView>
   );
 }
 
