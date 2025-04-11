@@ -17,6 +17,7 @@ import { BACKGROUNDS, FRAMES } from '@/constants/shop-items';
 import { filterAvatar } from '@/utilities/functions/filter-avatars';
 import BackgroundCloset from '@/components/closets/background-closet';
 import FrameCloset from '@/components/closets/frame-closet';
+import ButtonBack from '@/components/buttons/button-back';
 
 
 const profileData = {
@@ -145,6 +146,10 @@ const EditProfile = () => {
         }}
       />
     }>
+      <View style={styles.backButton}>
+        <ButtonBack text='Back' />
+      </View>
+
       <View style={styles.avatarContainer}>
         <View style={[
           styles.frame,
@@ -269,9 +274,12 @@ const EditProfile = () => {
 }
 
 const styles = StyleSheet.create({
-  conainer: {
-
+  backButton: {
+    position: 'absolute',
+    top: 10,
+    left: 0
   },
+
   avatarContainer: {
     alignSelf: 'center',
     justifyContent: 'center',
