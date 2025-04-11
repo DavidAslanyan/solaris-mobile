@@ -18,6 +18,7 @@ import { selectFrameColor } from '@/utilities/functions/select-frame-color';
 import { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, useColorScheme, Appearance } from 'react-native'
 import { useAppTheme } from '../contexts/ThemeContext';
+import { router } from 'expo-router';
 
 const Profile = () => {
   const data = {
@@ -103,7 +104,7 @@ const Profile = () => {
         <OptionTab
           title='Edit Profile'
           icon={<EditIcon color={iconColor} />}
-          onPress={() => {}}
+          onPress={() => router.push('/pages/edit-profile')}
         />
         <OptionTab
           title='History'

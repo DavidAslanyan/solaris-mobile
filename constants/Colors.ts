@@ -27,7 +27,7 @@ export const Colors = {
   orange: "#fab533",
   thirdly: "#D9D9D9",
   darkThirdly: "#626262",
-  darkBackground: "rgb(31, 32, 32)",
+  darkBackground: "rgb(5, 10, 26)",
   inacitveBackground: "rgb(71, 74, 74)", 
   darkerBackgorund: "#10121a",
   lightBackground: "#F0F0F0",

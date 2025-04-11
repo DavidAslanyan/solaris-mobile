@@ -1,9 +1,10 @@
 import { Colors } from '@/constants/Colors';
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, useColorScheme } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import EyeOpenIcon from '../icons/EyeOpenIcon';
 import EyeClosedIcon from '../icons/EyeClosedIcon';
 import ThemeText from '../themes/theme-text';
+import { useAppTheme } from '@/app/contexts/ThemeContext';
 
 type InputProps = {
   label?: string;
@@ -35,8 +36,8 @@ const InputCustom: React.FC<InputProps> = ({
   disabled = false,
 }) => {
   const [visible, setVisible] = useState<boolean>(false);
-  const colorScheme = useColorScheme();
-  const themeColor = colorScheme === 'light' ? Colors.secondary : Colors.white;
+  const { theme } = useAppTheme();
+  const themeColor = theme === 'light' ? Colors.secondary : Colors.white;
 
   
   return (

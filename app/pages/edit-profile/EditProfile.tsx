@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useAppTheme } from '@/app/contexts/ThemeContext';
 import { Colors } from '@/constants/Colors';
@@ -306,7 +306,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     gap: 10,
-    paddingHorizontal: '4%'
+    paddingHorizontal: '4%',
+    paddingBottom: 30
   }
 })
 

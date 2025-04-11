@@ -1,6 +1,7 @@
-import { View, StyleSheet, Modal, useColorScheme } from 'react-native'
+import { View, StyleSheet, Modal } from 'react-native'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Colors } from '@/constants/Colors';
+import { useAppTheme } from '@/app/contexts/ThemeContext';
 
 type PopupProps = {
   isOpen: boolean;
@@ -9,7 +10,7 @@ type PopupProps = {
 };
 
 const Popup: React.FC<PopupProps> = ({ isOpen, setIsOpen, children }) => {
-  const colorScheme = useColorScheme();
+  const { theme } = useAppTheme();
 
   return (
     <Modal
@@ -21,13 +22,13 @@ const Popup: React.FC<PopupProps> = ({ isOpen, setIsOpen, children }) => {
       <View style={[
         styles.centeredView,
         {
-          backgroundColor: colorScheme === 'light' ? Colors.lowOpacityWhite : Colors.lowOpacityDark,
+          backgroundColor: theme === 'light' ? Colors.lowOpacityWhite : Colors.lowOpacityDark,
         }
       ]}>
         <View style={[
           styles.modalView,
           {
-            backgroundColor: colorScheme === 'light' ? Colors.white : Colors.darkerBackgorund,
+            backgroundColor: theme === 'light' ? Colors.white : Colors.darkerBackgorund,
           }
         ]}>
           {children}

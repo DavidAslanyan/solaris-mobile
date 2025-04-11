@@ -27,7 +27,7 @@ export default function ParallaxScrollView({
   const { theme } = useAppTheme();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
-  const bottom = useBottomTabOverflow();
+  // const bottom = useBottomTabOverflow();
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -50,9 +50,10 @@ export default function ParallaxScrollView({
       <Animated.ScrollView
         ref={scrollRef}
         scrollEventThrottle={16}
-        scrollIndicatorInsets={{ bottom }}
+        // scrollIndicatorInsets={{ bottom }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: bottom }}>
+        // contentContainerStyle={{ paddingBottom: bottom }}
+        >
         <Animated.View
           style={[
             styles.header,
