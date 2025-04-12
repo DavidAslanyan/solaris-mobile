@@ -13,28 +13,28 @@ const Popup: React.FC<PopupProps> = ({ isOpen, setIsOpen, children }) => {
   const { theme } = useAppTheme();
 
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isOpen}
-      onRequestClose={() => setIsOpen(false)}
-    >
-      <View style={[
-        styles.centeredView,
-        {
-          backgroundColor: theme === 'light' ? Colors.lowOpacityWhite : Colors.lowOpacityDark,
-        }
-      ]}>
+      <Modal
+        animationType='fade'
+        transparent={true}
+        visible={isOpen}
+        onRequestClose={() => setIsOpen(false)}
+      >
         <View style={[
-          styles.modalView,
+          styles.centeredView,
           {
-            backgroundColor: theme === 'light' ? Colors.white : Colors.darkerBackgorund,
+            backgroundColor: theme === 'light' ? Colors.lowOpacityWhite : Colors.lowOpacityDark,
           }
         ]}>
-          {children}
+          <View style={[
+            styles.modalView,
+            {
+              backgroundColor: theme === 'light' ? Colors.white : Colors.darkerBackgorund,
+            }
+          ]}>
+            {children}
+          </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
   );
 };
 

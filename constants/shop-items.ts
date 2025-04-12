@@ -14,8 +14,8 @@ export const RENDER_AVATARS = {
 };
 
 export const AVATARS = {
-  male1: "@/assets/images/user-avatars/male-1.png",
-  female1: "@/assets/images/user-avatars/female-1.png",
+  male1: "/user-avatars/male-1.png",
+  female1: "/user-avatars/female-1.png",
   male2: "/user-avatars/male-2.png",
   female2: "/user-avatars/female-2.png",
   male3: "/user-avatars/male-3.png",
