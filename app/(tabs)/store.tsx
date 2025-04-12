@@ -1,5 +1,5 @@
 import { View, StyleSheet, TouchableOpacity, Animated, Image, ImageSourcePropType, ScrollView } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ThemeText from '@/components/themes/theme-text'
 import ShopIcon from '@/components/icons/navbar-icons/ShopIcon'
 import { ThemedView } from '@/components/ThemedView'
@@ -15,6 +15,7 @@ import ButtonMainSmall from '@/components/buttons/button-main-small'
 import { selectFrameColor } from '@/utilities/functions/select-frame-color'
 import { StoreItemEnum } from '@/utilities/enums/store-item.enum'
 import { filterBackground } from '@/utilities/functions/filter-backgrounds'
+import { useAppTheme } from '../contexts/ThemeContext'
 
 const profileData = {
   id: "6cadc416-677a-4aaf-8a69-fdbf53b8d761",
@@ -71,6 +72,8 @@ const Store = () => {
   const ownedBackgrounds= profileData?.purchasedBackgrounds ?? [];
   const coins = profileData?.coins ?? 0;
 
+  const { theme } = useAppTheme();
+
   const [activeNav, setActiveNav] = useState<string>(NAVBAR_ITEMS[0]);
   const [selectedItem, setSelectedItem] = useState<StoreItemType | null>(null);
   
@@ -104,7 +107,7 @@ const Store = () => {
       <View style={styles.content}>
         <View style={styles.title}>
           <ThemeText size='xl' weight='bold'>Store</ThemeText>
-          <ShopIcon />
+          <ShopIcon color={theme === 'dark' ? Colors.white : Colors.secondary} />
         </View>
 
         <View style={styles.balance}>
@@ -180,7 +183,7 @@ const Store = () => {
                 borderRadius: '50%',
                 borderWidth: 7,
                 borderColor: selectFrameColor(selectedItem.url),
-                backgroundColor: Colors.backPrimary
+                backgroundColor: theme === 'dark' ? Colors.darkerBackgorund : Colors.backPrimary,
               }} />
               }
               
@@ -209,7 +212,7 @@ const Store = () => {
                     borderRadius: '50%',
                     borderWidth: 7,
                     borderColor: selectFrameColor(selectedItem.url),
-                    backgroundColor: Colors.backPrimary,
+                    backgroundColor: theme === 'dark' ? Colors.darkerBackgorund : Colors.backPrimary,
                   }} />
                 }
                 <View  style={styles.avatarContent}>
@@ -337,7 +340,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   content: {
-    paddingHorizontal: '4%'
+    paddingHorizontal: '4%',
+    paddingBottom: '8%'
   },
   title: {
     paddingTop: '20%',
@@ -379,13 +383,13 @@ const styles = StyleSheet.create({
   },
 
   avatarContainer: {
-    paddingBottom: 420
+    paddingBottom: 400,
   },
 
   avatarList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 20,
+    gap: 25,
     alignItems: 'center',
     justifyContent: 'space-around'
   },

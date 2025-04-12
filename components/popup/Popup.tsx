@@ -14,7 +14,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, setIsOpen, children }) => {
 
   return (
       <Modal
-        animationType='fade'
+        animationType='slide'
         transparent={true}
         visible={isOpen}
         onRequestClose={() => setIsOpen(false)}
