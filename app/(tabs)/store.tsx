@@ -6,7 +6,15 @@ import { ThemedView } from '@/components/ThemedView'
 import CoinIcon from '@/components/icons/CoinIcon'
 import { Colors } from '@/constants/Colors'
 import { BACKGROUNDS, FRAMES } from '@/constants/shop-items'
-import { filterAvatars } from '@/utilities/functions/filter-avatars'
+import { filterAvatar } from '@/utilities/functions/filter-avatars'
+import { AVATARS_STORE, AvatarStoreType, BACKGROUNDS_STORE, FRAMES_STORE, FrameStoreItemType, FrameStoreType, StoreItemType } from '../data/store.config'
+import SuccessIcon from '@/components/icons/SuccessIcon'
+import Popup from '@/components/popup'
+import ButtonSecondarySmall from '@/components/buttons/button-secondary-small'
+import ButtonMainSmall from '@/components/buttons/button-main-small'
+import { selectFrameColor } from '@/utilities/functions/select-frame-color'
+import { StoreItemEnum } from '@/utilities/enums/store-item.enum'
+import { filterBackground } from '@/utilities/functions/filter-backgrounds'
 
 const profileData = {
   id: "6cadc416-677a-4aaf-8a69-fdbf53b8d761",
@@ -15,28 +23,28 @@ const profileData = {
   purchasedAvatars: [
      "/user-avatars/male-1.png",
      "/user-avatars/female-1.png",
-     "/user-avatars/male-2.png",
-     "/user-avatars/female-2.png",
-     "/user-avatars/male-3.png",
-     "/user-avatars/female-3.png",
-     "/user-avatars/limited-1.png",
-     "/user-avatars/limited-2.png",
-     "/user-avatars/limited-3.png",
-     "/user-avatars/limited-4.png",
-     "/user-avatars/limited-5.png",
-     "/user-avatars/limited-6.png",
+    //  "/user-avatars/male-2.png",
+    //  "/user-avatars/female-2.png",
+    //  "/user-avatars/male-3.png",  
+    //  "/user-avatars/female-3.png",
+    //  "/user-avatars/limited-1.png",
+    //  "/user-avatars/limited-2.png",
+    //  "/user-avatars/limited-3.png",
+    //  "/user-avatars/limited-4.png",
+    //  "/user-avatars/limited-5.png",
+    //  "/user-avatars/limited-6.png",
   ],
   purchasedBackgrounds: [
     BACKGROUNDS.def,
     BACKGROUNDS.cover1,
-    BACKGROUNDS.cover2,
-    BACKGROUNDS.cover3,
-    BACKGROUNDS.cover4,
-    BACKGROUNDS.cover5,
-    BACKGROUNDS.cover6,
-    BACKGROUNDS.cover7,
-    BACKGROUNDS.cover8,
-    BACKGROUNDS.cover9,
+    // BACKGROUNDS.cover2,
+    // BACKGROUNDS.cover3,
+    // BACKGROUNDS.cover4,
+    // BACKGROUNDS.cover5,
+    // BACKGROUNDS.cover6,
+    // BACKGROUNDS.cover7,
+    // BACKGROUNDS.cover8,
+    // BACKGROUNDS.cover9,
   ],
   purchasedFrames: [
     FRAMES.def, 
@@ -45,7 +53,7 @@ const profileData = {
     FRAMES.yellow, FRAMES.pink, FRAMES.teal, FRAMES.lime, FRAMES.indigo, FRAMES.rose,
     FRAMES.amber, FRAMES.cyan, FRAMES.emerald, FRAMES.violet
   ],
-  coins: 75,
+  coins: 275,
   backgroundUrl: BACKGROUNDS.cover2,
   rang: "Student",
   rangURL: "/rangs/rang-1.png",
@@ -58,7 +66,13 @@ const profileData = {
 const NAVBAR_ITEMS = ["Avatars", "Frames", "Backgrounds"];
 
 const Store = () => {
+  const ownedAvatars = profileData?.purchasedAvatars ?? [];
+  const ownedFrames = profileData?.purchasedFrames ?? [];
+  const ownedBackgrounds= profileData?.purchasedBackgrounds ?? [];
+  const coins = profileData?.coins ?? 0;
+
   const [activeNav, setActiveNav] = useState<string>(NAVBAR_ITEMS[0]);
+  const [selectedItem, setSelectedItem] = useState<StoreItemType | null>(null);
   
   const underlineAnimation = useRef(new Animated.Value(24)).current;
   const selectNavbarItem = (title: string, index: number) => {
@@ -71,7 +85,19 @@ const Store = () => {
     }).start();
   };
 
-  const avatarImages = filterAvatars(profileData.purchasedAvatars);
+  const avatarStore = AVATARS_STORE.map((avatar) => (
+    {
+      ...avatar,
+      formattedUrl: filterAvatar(avatar.url) as ImageSourcePropType
+    }
+  ));
+  const backgroundsStore = BACKGROUNDS_STORE.map((background) => (
+    {
+      ...background,
+      formattedUrl: filterBackground(background.url) as ImageSourcePropType
+    }
+  ));
+
   
   return (
     <ThemedView style={styles.container}>
@@ -112,33 +138,195 @@ const Store = () => {
           />
 
           <View style={styles.line}/>
+        </View>
 
+        <View style={styles.store}>
           {activeNav === NAVBAR_ITEMS[0] &&
-            <AvatarsSection avatars={avatarImages} />
+            <AvatarsSection owned={ownedAvatars} set={setSelectedItem} data={avatarStore} />
           }
 
-          {/* {activeNav === NAVBAR_ITEMS[1] &&
-            <AvatarsSection />
+          {activeNav === NAVBAR_ITEMS[1] &&
+            <FramesSection owned={ownedFrames} set={setSelectedItem} data={FRAMES_STORE} />
           }
 
           {activeNav === NAVBAR_ITEMS[2] &&
-          } */}
+            <BackgroundsSection owned={ownedBackgrounds} set={setSelectedItem} data={backgroundsStore} />
+          }
         </View>
+
+        <Popup
+          isOpen={selectedItem !== null}
+          setIsOpen={(setSelectedItem)}
+          >
+          <View>
+            {selectedItem &&
+            (ownedAvatars.includes(selectedItem?.url) 
+             || ownedFrames.includes(selectedItem?.url) 
+             || ownedBackgrounds.includes(selectedItem?.url)) 
+             ?
+             <View style={styles.popupContent}>
+              <ThemeText size='md' weight='medium'>You already own this item</ThemeText>
+              {selectedItem.type === StoreItemEnum.AVATAR
+              || selectedItem.type === StoreItemEnum.BACKGROUND
+              ?
+              <Image 
+                style={selectedItem.type === StoreItemEnum.AVATAR ? styles.avatarImage : styles.backgroundImageLarge} 
+                source={selectedItem.formattedUrl} 
+              />
+              :
+              <View style={{
+                width: 120,
+                height: 120,
+                borderRadius: '50%',
+                borderWidth: 7,
+                borderColor: selectFrameColor(selectedItem.url),
+                backgroundColor: Colors.backPrimary
+              }} />
+              }
+              
+              <View  style={styles.avatarContent}>
+                <SuccessIcon />
+                <ThemeText weight='medium'>Owned</ThemeText>
+              </View>
+              <ButtonSecondarySmall title='Back' onPress={() => setSelectedItem(null)} />
+             </View>
+             : 
+             <>
+             {selectedItem &&
+              <View style={styles.popupContent}>
+                <ThemeText size='md' weight='medium'>Would you like to buy this item ?</ThemeText>
+                {selectedItem.type === StoreItemEnum.AVATAR
+                || selectedItem.type === StoreItemEnum.BACKGROUND
+                ?
+                  <Image 
+                    style={selectedItem.type === StoreItemEnum.AVATAR ? styles.avatarImage : styles.backgroundImageLarge} 
+                    source={selectedItem.formattedUrl} 
+                  />
+                :
+                  <View style={{
+                    width: 120,
+                    height: 120,
+                    borderRadius: '50%',
+                    borderWidth: 7,
+                    borderColor: selectFrameColor(selectedItem.url),
+                    backgroundColor: Colors.backPrimary,
+                  }} />
+                }
+                <View  style={styles.avatarContent}>
+                  <CoinIcon />
+                  <ThemeText weight='medium'>{selectedItem.price}</ThemeText>
+                </View>
+                <View style={styles.buttonsContainer}>
+                  <ButtonSecondarySmall title='Back' onPress={() => setSelectedItem(null)} />
+                  <ButtonMainSmall title='Buy Item' disabled={coins < selectedItem.price} />
+                </View>
+             </View>
+             }
+             </>
+            }
+          </View>
+        </Popup>
+          
       </View>
     </ThemedView>
 
   )
 }
 
-const AvatarsSection = ({ avatars }: { avatars: ImageSourcePropType[] }) => {
+const AvatarsSection = ({ owned, set, data }: { owned: string[], set: (arg: StoreItemType) => void, data: AvatarStoreType[] }) => {
   return (
-    <View>
-      <ScrollView>
-        {avatars.map((avatar, index) => (
-          <View key={index}>
-            <Image source={avatar} />
-          </View>
-        ))}
+    <View style={styles.avatarContainer}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.avatarList}>
+          {data.map((item, index) => (
+            <TouchableOpacity onPress={() => set(item)} key={index}>
+              <View style={styles.avatarItem}>
+                <Image style={styles.avatarImage} source={item.formattedUrl} />
+                <ThemeText size='md' weight='semibold'>{item.title}</ThemeText>
+                {owned.includes(item.url)
+                ? 
+                <View style={styles.avatarContent}>
+                  <SuccessIcon />
+                  <ThemeText weight='medium'>Owned</ThemeText>
+                </View>
+                : 
+                <View style={styles.avatarContent}>
+                  <CoinIcon />
+                  <ThemeText weight='semibold'>{item.price}</ThemeText>
+                </View>
+                }
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+  )
+}
+
+const FramesSection = ({ owned, set, data }: { owned: string[], set: (arg: FrameStoreItemType) => void, data: FrameStoreType[] }) => {
+  return (
+    <View style={styles.avatarContainer}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.avatarList}>
+          {data.map((item, index) => (
+            <TouchableOpacity onPress={() => set(item)} key={index}>
+              <View style={styles.avatarItem}>
+                <View style={{
+                  width: 120,
+                  height: 120,
+                  borderRadius: '50%',
+                  borderWidth: 7,
+                  borderColor: selectFrameColor(item.url)
+                }} />
+                <ThemeText size='md' weight='semibold'>{item.title}</ThemeText>
+                {owned.includes(item.url)
+                ? 
+                <View style={styles.avatarContent}>
+                  <SuccessIcon />
+                  <ThemeText weight='medium'>Owned</ThemeText>
+                </View>
+                : 
+                <View style={styles.avatarContent}>
+                  <CoinIcon />
+                  <ThemeText weight='semibold'>{item.price}</ThemeText>
+                </View>
+                }
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+  )
+}
+
+const BackgroundsSection = ({ owned, set, data }: { owned: string[], set: (arg: StoreItemType) => void, data: AvatarStoreType[] }) => {
+  return (
+    <View style={styles.avatarContainer}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.avatarList}>
+          {data.map((item, index) => (
+            <TouchableOpacity onPress={() => set(item)} key={index}>
+              <View style={styles.avatarItem}>
+                <Image style={styles.backgroundImage} source={item.formattedUrl} />
+                <ThemeText size='md' weight='semibold'>{item.title}</ThemeText>
+                {owned.includes(item.url)
+                ? 
+                <View style={styles.avatarContent}>
+                  <SuccessIcon />
+                  <ThemeText weight='medium'>Owned</ThemeText>
+                </View>
+                : 
+                <View style={styles.avatarContent}>
+                  <CoinIcon />
+                  <ThemeText weight='semibold'>{item.price}</ThemeText>
+                </View>
+                }
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
       </ScrollView>
     </View>
   )
@@ -186,6 +374,61 @@ const styles = StyleSheet.create({
     height: 2,
     backgroundColor: Colors.thirdly
   },
+  store: {
+    paddingTop: 20,
+  },
+
+  avatarContainer: {
+    paddingBottom: 420
+  },
+
+  avatarList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 20,
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+  avatarItem: {
+    alignItems: 'center',
+    gap: 5
+  },
+  avatarImage: {
+    width: 120,
+    height: 120
+  },
+  backgroundImage: {
+    width: 140,
+    height: 80,
+    borderRadius: 6
+  },
+
+  backgroundImageLarge: {
+    width: 200,
+    height: 100,
+    borderRadius: 6,
+  },
+
+  avatarContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 5
+  },
+
+  popupContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    paddingHorizontal: '4%'
+  },
+
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 10
+  }
 })
 
 export default Store;
