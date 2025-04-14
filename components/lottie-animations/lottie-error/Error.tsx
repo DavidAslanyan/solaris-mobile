@@ -2,7 +2,7 @@ import LottieView from 'lottie-react-native';
 import lottie from './hero.json';
 import { View } from "react-native";
 
-const ErrorAnimation = ({ width = 200, height = 200 }: { width?: number, height?: number }) => {
+const ErrorAnimation = ({ width = 180, height = 180 }: { width?: number, height?: number }) => {
   return (
   <View>
     <LottieView 

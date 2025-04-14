@@ -10,7 +10,7 @@ type LottieAnimationProps = {
 
 const LottieAnimation: React.FC<LottieAnimationProps> = ({ 
   width = 200, 
-  height = 200,
+  height = 180,
   loop = true,
   src 
 }) => {

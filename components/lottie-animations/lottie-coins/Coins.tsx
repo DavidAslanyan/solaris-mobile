@@ -1,17 +1,20 @@
-import Lottie from "lottie-react";
+import LottieView from 'lottie-react-native';
 import lottie from './coins.json';
 import { View } from "react-native";
 
-type CoinsType = {
-  width?: string;
-}
 
-const Coins: React.FC<CoinsType> = ({
-  width =  "max-w-[20rem]"
-}) => {
+const Coins = ({ width = 40, height = 40 }: { width?: number, height?: number }) => {
   return (
-  <View className={`w-full ${width}`}>
-    <Lottie animationData={lottie} loop={false} />
+  <View>
+    <LottieView 
+      source={lottie}
+      autoPlay
+      loop={false}
+      style={{
+        width: width,
+        height: height
+      }}
+    />
   </View>
   );
 };

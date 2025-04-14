@@ -7,6 +7,7 @@ import 'react-native-reanimated';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeCustomProvider } from './contexts/ThemeContext';
 import Games from './(tabs)/games';
+import Quiz from './pages/quiz';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -29,6 +30,7 @@ export default function RootLayout() {
   }
 
   return (
+    // <Quiz />
     <QueryClientProvider client={queryClient}>
       <ThemeCustomProvider>
         <Stack screenOptions={{ headerShown: false }}>

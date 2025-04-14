@@ -12,6 +12,7 @@ import React, { useEffect, useRef } from 'react';
 import { Colors } from '@/constants/Colors';
 import ButtonMainSmall from '../buttons/button-main-small';
 import { useAppTheme } from '@/app/contexts/ThemeContext';
+import { useRouter } from 'expo-router';
 
 type GameTabProps = {
   id: number;
@@ -34,6 +35,7 @@ const GameTab: React.FC<GameTabProps> = ({
   pressed,
   setPressed
 }) => {
+  const router = useRouter();
   const { theme } = useAppTheme();
   const titleTranslate = useRef(new Animated.Value(0)).current;
   const buttonOpacity = useRef(new Animated.Value(0)).current;
@@ -90,7 +92,7 @@ const GameTab: React.FC<GameTabProps> = ({
           {title}
         </Animated.Text>
         <Animated.View style={{ opacity: buttonOpacity }}>
-          <ButtonMainSmall title='Play' />
+          <ButtonMainSmall onPress={() => router.push('/pages/quiz')} title='Play' />
         </Animated.View>
       </View>
     </TouchableOpacity>
