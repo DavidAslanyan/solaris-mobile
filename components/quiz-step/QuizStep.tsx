@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ButtonQuizStep, { QuizButtonForm } from '../buttons/button-quiz-step/ButtonQuizStep';
-import { Colors } from '@/constants/Colors';
 import ThemeText from '../themes/theme-text';
 
 type QuizStepProps = {
@@ -37,8 +36,7 @@ const QuizStep: React.FC<QuizStepProps> = ({
 
   return (
     <View style={styles.container}>
-     <ThemeText style={{textAlign: 'center'}}>What does this mean? - <ThemeText>{term}</ThemeText></ThemeText>
-
+      <ThemeText size='lg' style={{ textAlign: 'center', paddingVertical: 10 }}>What does this mean? - <ThemeText weight='bold' size='lg'>{term}</ThemeText></ThemeText>
       <View style={{gap: 10, paddingTop: 10,}}>
       {shuffledOptions.map((item, index) => (
           <View key={index} >
