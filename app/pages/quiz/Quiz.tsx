@@ -84,6 +84,13 @@ const Quiz = () => {
 
 
   useEffect(() => {
+    if (!timerRunning && !successPopupOpen && !failPopupOpen) {
+      setTimeOverPopupOpen(true);
+    }
+  }, [timerRunning]);
+
+
+  useEffect(() => {
     setSelectedOptions(new Array(termData.length).fill(""));
     setResponses(new Array(termData.length).fill(""));
   }, [termData.length]);
@@ -249,7 +256,7 @@ const Quiz = () => {
         <View style={styles.failContainer}>
           {timeOverPopupOpen && <ErrorAnimation />}
           <Text style={styles.failTitle}>Failed</Text>
-          <ThemeText size='md' weight='medium' style={{paddingVertical: 10}}>Sorry, your time is over</ThemeText>
+          <ThemeText size='md' weight='medium' style={{paddingVertical: 10, paddingHorizontal: 60}}>Sorry, your time is over</ThemeText>
           <ButtonMainSmall onPress={handleRetry} title='Try Again' />
           <ThemeText style={{paddingVertical: 10}}>Or</ThemeText>
           <ButtonSecondarySmall onPress={handleFailPopup} title='Return to Terms' />

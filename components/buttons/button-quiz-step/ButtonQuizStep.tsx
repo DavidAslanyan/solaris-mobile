@@ -1,3 +1,4 @@
+import { useAppTheme } from '@/app/contexts/ThemeContext';
 import { Colors } from '@/constants/Colors';
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
@@ -15,6 +16,7 @@ type ButtonProps = {
 };
 
 const ButtonQuizStep: React.FC<ButtonProps> = ({ title, onPress, form }) => {
+  const { theme } = useAppTheme();
   const getButtonStyle = () => {
     switch (form) {
       case QuizButtonForm.SUCCESS:
@@ -23,7 +25,7 @@ const ButtonQuizStep: React.FC<ButtonProps> = ({ title, onPress, form }) => {
         return styles.error;
       case QuizButtonForm.DEF:
       default:
-        return styles.default;
+        return theme === 'dark' ? styles.darkDefault : styles.default
     }
   };
 
@@ -51,6 +53,11 @@ const styles = StyleSheet.create({
   },
   default: {
     backgroundColor: Colors.secondary, 
+  },
+  darkDefault: {
+    backgroundColor: Colors.darkerBackgorund,
+    borderWidth: 1,
+    borderColor: Colors.thirdly 
   },
   text: {
     color: '#ffffff',

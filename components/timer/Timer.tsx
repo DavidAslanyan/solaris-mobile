@@ -9,6 +9,7 @@ import Animated, {
   runOnJS,
 } from 'react-native-reanimated';
 import { Colors } from '@/constants/Colors';
+import { useAppTheme } from '@/app/contexts/ThemeContext';
 
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
@@ -23,7 +24,7 @@ const Timer: React.FC<TimerProps> = ({ seconds, isRunning, setIsRunning }) => {
   const radius = 50;
   const circumference = 2 * Math.PI * radius;
 
-  const progress = useSharedValue(1); // from 1 to 0
+  const progress = useSharedValue(1); 
   const animatedSeconds = useDerivedValue(() => Math.ceil(progress.value * seconds));
 
   useEffect(() => {
@@ -36,13 +37,16 @@ const Timer: React.FC<TimerProps> = ({ seconds, isRunning, setIsRunning }) => {
         }
       );
     } else {
-      progress.value = 1; // Reset progress if timer is not running
+      progress.value = 1; 
     }
   }, [isRunning]);
 
   const animatedProps = useAnimatedProps(() => ({
     strokeDashoffset: circumference * (1 - progress.value),
   }));
+
+  const { theme } = useAppTheme();
+  const color = theme === 'dark' ? Colors.white : Colors.secondary;
 
   return (
     <View style={styles.container}>
@@ -51,7 +55,7 @@ const Timer: React.FC<TimerProps> = ({ seconds, isRunning, setIsRunning }) => {
           cx="60"
           cy="60"
           r={radius}
-          stroke={Colors.secondary}
+          stroke={color}
           strokeWidth="6"
           fill="transparent"
           opacity={0.2}
@@ -60,7 +64,7 @@ const Timer: React.FC<TimerProps> = ({ seconds, isRunning, setIsRunning }) => {
           cx="60"
           cy="60"
           r={radius}
-          stroke={Colors.secondary}
+          stroke={color}
           strokeWidth="6"
           fill="transparent"
           strokeDasharray={circumference}
@@ -74,7 +78,7 @@ const Timer: React.FC<TimerProps> = ({ seconds, isRunning, setIsRunning }) => {
             alignSelf: 'center',
             top: 65,
             fontSize: 20,
-            color: Colors.secondary,
+            color: color,
           }}
         >
           {animatedSeconds.value}s
