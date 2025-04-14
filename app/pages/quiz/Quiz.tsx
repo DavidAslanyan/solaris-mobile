@@ -4,7 +4,6 @@ import { ThemedView } from '@/components/ThemedView';
 import ButtonBack from '@/components/buttons/button-back';
 import ThemeText from '@/components/themes/theme-text';
 import ButtonMain from '@/components/buttons/button-main';
-import ButtonQuizStep from '@/components/buttons/button-quiz-step';
 import { QuizButtonForm } from '@/components/buttons/button-quiz-step/ButtonQuizStep';
 import { fetchRandomTerms } from '@/utilities/functions/fetch-random-terms';
 import { fetchTermsLevelBased } from '@/utilities/functions/fetch-terms-level-based';
@@ -62,7 +61,7 @@ const Quiz = () => {
   const termsLevelBased = user ? fetchTermsLevelBased(user.difficultyLevel) : []; 
   const termData = useMemo(() => shuffleArray(termsLevelBased.slice(curProgress, curProgress + PROGRESS_POINTS)), [curProgress]);
   
-  // Generate all shuffled options once for all questions
+ 
   const allShuffledOptions = useMemo(() => {
     return termData.map((term, index) => {
       let uniqueRandomTerms = new Set<string>();
@@ -83,13 +82,13 @@ const Quiz = () => {
     });
   }, [termData]);
 
-  // Initialize selected options array with empty strings
+
   useEffect(() => {
     setSelectedOptions(new Array(termData.length).fill(""));
     setResponses(new Array(termData.length).fill(""));
   }, [termData.length]);
 
-  // Check if current question has an error response
+
   useEffect(() => {
     if (responses[step] === QuizButtonForm.ERROR) {
       setTimerRunning(false);
@@ -318,3 +317,4 @@ const styles = StyleSheet.create({
 })
 
 export default Quiz;
+
