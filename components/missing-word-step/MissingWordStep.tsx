@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
 import ButtonMainSmall from '../buttons/button-main-small';
 import { Colors } from '@/constants/Colors';
 import ThemeText from '../themes/theme-text';
@@ -26,6 +26,7 @@ const MissingWordStep: React.FC<MissingWordStepProps> = ({
 }) => {
   const { theme } = useAppTheme();
   const inputColor = theme === 'dark' ? Colors.white : Colors.secondary;
+  const placeholderColor = theme === 'dark' ? Colors.darkThirdly : Colors.lowOpacityDark;
 
   const words = explanation.split(' ');
   const longWords = words.filter((word) => word.length >= WORD_LENGTH);
@@ -61,12 +62,13 @@ const MissingWordStep: React.FC<MissingWordStepProps> = ({
         {formattedWords.map((word, index) => {
           if (word === UNDERLINE) {
             return (
-              <View key={index} style={styles.underlineInputWrapper}>
+              <View key={index} style={[styles.underlineInputWrapper, { borderColor: inputColor }]}>
                 <TextInput
                   value={inputValue}
                   onChangeText={setInputValue}
                   placeholder="Type here"
                   style={[styles.input, { color: inputColor }]}
+                  placeholderTextColor={placeholderColor}
                 />
               </View>
             );
@@ -106,7 +108,6 @@ const styles = StyleSheet.create({
   },
   underlineInputWrapper: {
     borderBottomWidth: 2,
-    borderColor: Colors.secondary,
     marginRight: 8,
   },
   input: {
