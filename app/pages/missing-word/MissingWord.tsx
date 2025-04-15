@@ -1,55 +1,55 @@
-import { View, Text, StyleSheet, ScrollView, Dimensions, NativeSyntheticEvent, NativeScrollEvent } from 'react-native'
-import React, { Fragment, useMemo, useState, useRef, useEffect } from 'react'
-import { ThemedView } from '@/components/ThemedView';
-import ButtonBack from '@/components/buttons/button-back';
-import ThemeText from '@/components/themes/theme-text';
-import ButtonMain from '@/components/buttons/button-main';
-import { QuizButtonForm } from '@/components/buttons/button-quiz-step/ButtonQuizStep';
-import { fetchRandomTerms } from '@/utilities/functions/fetch-random-terms';
-import { fetchTermsLevelBased } from '@/utilities/functions/fetch-terms-level-based';
-import { shuffleArray } from '@/utilities/functions/shuffle-array';
-import { DifficultyLevel } from '@/utilities/enums/difficulty-level.enum';
-import { PROGRESS_POINTS } from '@/constants/global-data';
-import QuizStep from '@/components/quiz-step';
-import Timer from '@/components/timer';
-import Popup from '@/components/popup';
-import VictoryBlock from '@/components/victory-block';
-import { GAME } from '@/constants/game-titles';
-import ErrorAnimation from '@/components/lottie-animations/lottie-error';
-import { Colors } from '@/constants/Colors';
-import ButtonMainSmall from '@/components/buttons/button-main-small';
-import ButtonSecondarySmall from '@/components/buttons/button-secondary-small';
-import { useRouter } from 'expo-router';
+import { View, Text, StyleSheet, ScrollView, NativeSyntheticEvent, NativeScrollEvent, Dimensions } from 'react-native'
+import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { ThemedView } from '@/components/ThemedView'
+import ButtonBack from '@/components/buttons/button-back'
+import ThemeText from '@/components/themes/theme-text'
+import ButtonMain from '@/components/buttons/button-main'
+import Timer from '@/components/timer'
+import { useRouter } from 'expo-router'
+import { DifficultyLevel } from '@/utilities/enums/difficulty-level.enum'
+import { fetchTermsLevelBased } from '@/utilities/functions/fetch-terms-level-based'
+import { shuffleArray } from '@/utilities/functions/shuffle-array'
+import { PROGRESS_POINTS } from '@/constants/global-data'
+import MissingWordStep from '@/components/missing-word-step'
+import { CheckedWordReponseEnum } from '@/components/missing-word-step/MissingWordStep'
+import ButtonMainSmall from '@/components/buttons/button-main-small'
+import { Colors } from '@/constants/Colors'
+import { GAME } from '@/constants/game-titles'
+import Popup from '@/components/popup'
+import VictoryBlock from '@/components/victory-block'
+import ErrorAnimation from '@/components/lottie-animations/lottie-error'
+import ButtonSecondarySmall from '@/components/buttons/button-secondary-small'
+
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const TIMER_SECONDS = 45;
-const REWARD_COINS = 5;
-const REWARD_POINTS = 175;
-
 const rules = [
-  "You'll be shown a term that you've learned.",
-  "Below it, you'll see a list of possible explanations.",
+  "A short explanation of one the learned terms will be shown to you",
+  "However, one of the words will be missing",
   "Select the correct explanation to move forward.",
-  "Keep going until you've answered all the terms correctly.",
+  "You will have to type the missing word by yourself and click check",
+  "You have 1 minute to complete all 5 terms",
   "That's it, continue the same steps for the rest of the terms",
-  "If you passed all, Congrats, you won Game-1",
+  "If you passed all, Congrats, you won Game 2",
   "You are ready to proceed to the next games"
 ];
 
-const Quiz = () => {
+const TIMER_SECONDS = 60;
+const REWARD_COINS = 5;
+const REWARD_POINTS = 175;
+
+const MissingWord = () => {
   const router = useRouter();
   const user = {
     progress: 0,
     difficultyLevel: DifficultyLevel.EASY
   };
   const gamesPassed: string[] = [];
+  const [gameLive, setGameLive] = useState<boolean>(true);
 
-  const [gameLive, setGameLive] = useState<boolean>(false);
   const [step, setStep] = useState<number>(0);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const [responses, setResponses] = useState<(QuizButtonForm | "")[]>([]);
   const [timerRunning, setTimerRunning] = useState<boolean>(true);
+  const [response, setResponse] = useState<CheckedWordReponseEnum | null>(null);
 
   const [successPopupOpen, setSuccessPopupOpen] = useState<boolean>(false);
   const [failPopupOpen, setFailPopupOpen] = useState<boolean>(false);
@@ -61,81 +61,21 @@ const Quiz = () => {
   const termsLevelBased = user ? fetchTermsLevelBased(user.difficultyLevel) : []; 
   const termData = useMemo(() => shuffleArray(termsLevelBased.slice(curProgress, curProgress + PROGRESS_POINTS)), [curProgress]);
   
- 
-  const allShuffledOptions = useMemo(() => {
-    return termData.map((term, index) => {
-      let uniqueRandomTerms = new Set<string>();
-    
-      while (uniqueRandomTerms.size < 3) {
-        const randomTerm = fetchRandomTerms(1)[0].shortExplanation;
-        if (randomTerm !== term.shortExplanation) {
-          uniqueRandomTerms.add(randomTerm);
-        }
-      }
-    
-      const options = [...uniqueRandomTerms];
-      const randomIndex = Math.floor(Math.random() * (options.length + 1));
-    
-      options.splice(randomIndex, 0, term.shortExplanation);
-    
-      return options;
-    });
-  }, [termData]);
-
-
   useEffect(() => {
     if (!timerRunning && !successPopupOpen && !failPopupOpen) {
       setTimeOverPopupOpen(true);
     }
   }, [timerRunning]);
 
-
   useEffect(() => {
-    setSelectedOptions(new Array(termData.length).fill(""));
-    setResponses(new Array(termData.length).fill(""));
-  }, [termData.length]);
-
-
-  useEffect(() => {
-    if (responses[step] === QuizButtonForm.ERROR) {
+    if (response === CheckedWordReponseEnum.FAIL) {
       setTimerRunning(false);
       setFailPopupOpen(true);
     }
-  }, [responses, step]);
-
-  const handleSelect = (option: string, index: number) => {
-    if (selectedOptions[index] === "") {
-      const newSelectedOptions = [...selectedOptions];
-      newSelectedOptions[index] = option;
-      setSelectedOptions(newSelectedOptions);
-    }
-  }
-
-  const handleSetResponse = (response: QuizButtonForm | "", index: number) => {
-    const newResponses = [...responses];
-    newResponses[index] = response;
-    setResponses(newResponses);
-  }
-
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const newStep = Math.round(event.nativeEvent.contentOffset.x / SCREEN_WIDTH);
-    if (newStep !== step) {
-      setStep(newStep);
-    }
-  }
-
-  const scrollToStep = (stepIndex: number) => {
-    if (scrollViewRef.current && stepIndex < termData.length) {
-      scrollViewRef.current.scrollTo({ x: stepIndex * SCREEN_WIDTH, animated: true });
-      setStep(stepIndex);
-    } else {
-      setTimerRunning(false);
-      setSuccessPopupOpen(true);
-    }
-  }
+  }, [response]);
 
   const handleRetry = () => {
-    router.replace('/pages/quiz');
+    router.replace('/pages/missing-word');
   }
 
   const handleFailPopup = () => {
@@ -149,7 +89,26 @@ const Quiz = () => {
       router.replace('/(tabs)/games');
     }
   }
+    
 
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const newStep = Math.round(event.nativeEvent.contentOffset.x / SCREEN_WIDTH);
+    if (newStep !== step) {
+      setStep(newStep);
+    }
+  }
+
+
+  const scrollToStep = (stepIndex: number) => {
+    if (scrollViewRef.current && stepIndex < termData.length) {
+      scrollViewRef.current.scrollTo({ x: stepIndex * SCREEN_WIDTH, animated: true });
+      setStep(stepIndex);
+    } else {
+      setTimerRunning(false);
+      setSuccessPopupOpen(true);
+    }
+  }
+  
   if (!gameLive) {
     return (
       <ThemedView style={styles.rulesContainer}>
@@ -158,8 +117,8 @@ const Quiz = () => {
         </View>
         <View>
           <View>
-            <ThemeText size='xl' weight='bold' style={{paddingVertical: 10, textAlign: 'center'}}>Game 1 - Quiz</ThemeText>
-            <ThemeText size='md' weight='semibold' style={{paddingVertical: 10, textAlign: 'center'}}>Take a quiz to test your recently learnt terms</ThemeText>
+            <ThemeText size='xl' weight='bold' style={{paddingVertical: 10, textAlign: 'center'}}>Game 2 - Missing Word</ThemeText>
+            <ThemeText size='md' weight='semibold' style={{paddingVertical: 10, textAlign: 'center'}}>Find the missing words in the terms' explanations to test your recently learnt</ThemeText>
             <View style={styles.rules}>
               {rules.map((data, index) => (
                 <Fragment key={index}>
@@ -179,7 +138,7 @@ const Quiz = () => {
       </ThemedView>
     )
   }
-  
+
   return (
     <ThemedView style={styles.container}>
       <View style={styles.backButton}>
@@ -191,12 +150,12 @@ const Quiz = () => {
       </View>
       
       <View style={styles.headerContainer}>
-        <ThemeText size='lg' weight='bold'>Quiz Game</ThemeText>
+        <ThemeText size='lg' weight='bold'>Missing Word</ThemeText>
         <ThemeText size='md' weight='medium'>Question {step + 1} of {termData.length}</ThemeText>
       </View>
-      
+
       <View>
-        <ScrollView
+        <ScrollView 
           ref={scrollViewRef}
           horizontal
           pagingEnabled
@@ -206,31 +165,32 @@ const Quiz = () => {
           scrollEnabled={false}
         >
           {termData.map((item, index) => (
-            <View style={styles.quizStepContainer} key={index}>
-              <QuizStep
+            <View key={index} style={{flex: 1, width: SCREEN_WIDTH, alignSelf: 'center'}}>
+              <MissingWordStep
+                setResponse={setResponse}
                 term={item.term}
-                answer={item.shortExplanation}
-                selectedOption={selectedOptions[index]}
-                selectOption={(option) => handleSelect(option, index)}
-                shuffledOptions={allShuffledOptions[index]}
-                setResponse={(response) => handleSetResponse(response, index)}
+                explanation={item.shortExplanation}
               />
             </View>
           ))}
         </ScrollView>
       </View>
-      
-      <View style={styles.navigationContainer}>
-        <ButtonMain 
-          title={step < termData.length - 1 ? "Next Question" : "Finish"} 
-          onPress={() => {
-            if (selectedOptions[step] !== "") {
+
+      <View>
+        {response === CheckedWordReponseEnum.SUCCESS &&
+        <View>
+          <Text style={styles.correctText}>Correct, Well Done !</Text>
+          <ButtonMain 
+            onPress={() => { 
               scrollToStep(step + 1);
-            }
-          }}
-          disabled={selectedOptions[step] === ""}
-        />
+              setResponse(null);
+            }}
+            title={step < termData.length - 1 ? "Next Question" : "Finish"}
+          />
+        </View>
+        }
       </View>
+
 
       <Popup isOpen={successPopupOpen} setIsOpen={() => {}}>
         <VictoryBlock 
@@ -285,7 +245,7 @@ const styles = StyleSheet.create({
     zIndex: 10
   },
   timer: {
-    paddingTop: 100,
+    paddingTop: 150,
     alignItems: 'center',
   },
   headerContainer: {
@@ -293,20 +253,12 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 20,
   },
-  quizStepContainer: {
-    width: SCREEN_WIDTH,
-    paddingHorizontal: 20,
-  },
-  navigationContainer: {
-    paddingTop: 30,
-    alignSelf: 'center'
-  },
-  navButton: {
-    paddingTop: 30,
-    marginHorizontal: 5,
-  },
-  disabledButton: {
-    opacity: 0.5,
+  correctText: {
+    fontWeight: '700',
+    color: Colors.primary,
+    fontSize: 18,
+    textAlign: 'center',
+    paddingBottom: 18
   },
   failContainer: {
     alignItems: 'center'
@@ -319,5 +271,5 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Quiz;
+export default MissingWord;
 
