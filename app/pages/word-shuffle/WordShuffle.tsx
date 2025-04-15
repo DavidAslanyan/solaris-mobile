@@ -142,9 +142,7 @@ const WordShuffle = () => {
 
   return (
     <KeyboardAvoidingWrapper>
-      <ThemedView style={[styles.container, {
-        height: 700
-      }]}>
+      <ThemedView style={styles.container}>
         <View style={styles.backButton}>
           <ButtonBack text='Back' />
         </View>
