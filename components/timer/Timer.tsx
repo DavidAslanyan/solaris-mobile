@@ -1,3 +1,4 @@
+import { useAppTheme } from "@/app/contexts/ThemeContext";
 import { Colors } from "@/constants/Colors";
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
@@ -10,6 +11,9 @@ interface TimerProps {
 }
 
 const Timer: React.FC<TimerProps> = ({ seconds, isRunning, setIsRunning }) => {
+  const { theme } = useAppTheme();
+  const color = theme === 'dark' ? Colors.white : Colors.secondary;
+
   const [time, setTime] = useState<number>(seconds);
 
   useEffect(() => {
@@ -40,7 +44,7 @@ const Timer: React.FC<TimerProps> = ({ seconds, isRunning, setIsRunning }) => {
           cx="60"
           cy="60"
           r={radius}
-          stroke={Colors.secondary}
+          stroke={color}
           strokeWidth={strokeWidth}
           fill="transparent"
           opacity={0.2}
@@ -49,7 +53,7 @@ const Timer: React.FC<TimerProps> = ({ seconds, isRunning, setIsRunning }) => {
           cx="60"
           cy="60"
           r={radius}
-          stroke={Colors.secondary}
+          stroke={color}
           strokeWidth={strokeWidth}
           fill="transparent"
           strokeDasharray={`${circumference} ${circumference}`}
@@ -62,7 +66,7 @@ const Timer: React.FC<TimerProps> = ({ seconds, isRunning, setIsRunning }) => {
           y="60"
           textAnchor="middle"
           dy=".3em"
-          fill={Colors.secondary}
+          fill={color}
           fontSize="20"
         >
           {time}s

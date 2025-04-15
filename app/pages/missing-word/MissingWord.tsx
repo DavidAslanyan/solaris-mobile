@@ -45,7 +45,7 @@ const MissingWord = () => {
     difficultyLevel: DifficultyLevel.EASY
   };
   const gamesPassed: string[] = [];
-  const [gameLive, setGameLive] = useState<boolean>(true);
+  const [gameLive, setGameLive] = useState<boolean>(false);
 
   const [step, setStep] = useState<number>(0);
   const [timerRunning, setTimerRunning] = useState<boolean>(true);

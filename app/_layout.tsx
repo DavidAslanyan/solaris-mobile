@@ -6,9 +6,6 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeCustomProvider } from './contexts/ThemeContext';
-import Games from './(tabs)/games';
-import Quiz from './pages/quiz';
-import MissingWord from './pages/missing-word';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -31,15 +28,14 @@ export default function RootLayout() {
   }
 
   return (
-    <MissingWord />
-    // <QueryClientProvider client={queryClient}>
-    //   <ThemeCustomProvider>
-    //     <Stack screenOptions={{ headerShown: false }}>
-    //       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    //       <Stack.Screen name="+not-found" />
-    //     </Stack>
-    //     <StatusBar style="auto" />
-    //   </ThemeCustomProvider>
-    // </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeCustomProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+      </ThemeCustomProvider>
+    </QueryClientProvider>
   );
 }

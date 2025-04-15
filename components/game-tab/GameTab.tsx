@@ -92,7 +92,7 @@ const GameTab: React.FC<GameTabProps> = ({
           {title}
         </Animated.Text>
         <Animated.View style={{ opacity: buttonOpacity }}>
-          <ButtonMainSmall onPress={() => router.push('/pages/quiz')} title='Play' />
+          <ButtonMainSmall onPress={() => router.push('/pages/missing-word')} title='Play' />
         </Animated.View>
       </View>
     </TouchableOpacity>
