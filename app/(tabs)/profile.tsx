@@ -1,7 +1,6 @@
 import BellIcon from '@/components/icons/BellIcon';
 import BookIcon from '@/components/icons/BookIcon';
 import EditIcon from '@/components/icons/EditIcon';
-import GobletIcon from '@/components/icons/GobletIcon';
 import MoonIcon from '@/components/icons/MoonIcon';
 import ExitIcon from '@/components/icons/navbar-icons/ExitIcon';
 import HelpIcon from '@/components/icons/navbar-icons/HelpIcon';
@@ -16,7 +15,7 @@ import { Colors } from '@/constants/Colors';
 import { determinePrize } from '@/utilities/functions/map-prizes';
 import { selectFrameColor } from '@/utilities/functions/select-frame-color';
 import { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, useColorScheme, Appearance } from 'react-native'
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import { useAppTheme } from '../contexts/ThemeContext';
 import { router } from 'expo-router';
 
@@ -31,13 +30,12 @@ const Profile = () => {
   }
 
   const { current } = determinePrize(data.points);
-
   const { theme, toggleTheme } = useAppTheme();
 
   const toggleAppTheme = () => {
     toggleTheme();
     setDarkMode(!darkMode);
-  }
+  };
 
   const iconColor = theme == 'dark' ? Colors.white : Colors.secondary;
   const [darkMode, setDarkMode] = useState<boolean>(false);
@@ -114,7 +112,7 @@ const Profile = () => {
         <OptionTab
           title='Leaderboard'
           icon={<PrizeIcon color={iconColor} />}
-          onPress={() => {}}
+          onPress={() => router.push('/pages/leaderboard')}
         />
         <OptionTab
           title='Notifications'
