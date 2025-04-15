@@ -19,6 +19,7 @@ import Popup from '@/components/popup'
 import VictoryBlock from '@/components/victory-block'
 import ErrorAnimation from '@/components/lottie-animations/lottie-error'
 import ButtonSecondarySmall from '@/components/buttons/button-secondary-small'
+import KeyboardAvoidingWrapper from '@/components/keyboard-avoid-wrapper'
 
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -140,89 +141,91 @@ const MissingWord = () => {
   }
 
   return (
-    <ThemedView style={styles.container}>
-      <View style={styles.backButton}>
-        <ButtonBack text='Back' />
-      </View>
+    <KeyboardAvoidingWrapper>
+      <ThemedView style={styles.container}>
+        <View style={styles.backButton}>
+          <ButtonBack text='Back' />
+        </View>
 
-      <View style={styles.timer}>
-        <Timer setIsRunning={setTimerRunning} seconds={TIMER_SECONDS} isRunning={timerRunning} />
-      </View>
-      
-      <View style={styles.headerContainer}>
-        <ThemeText size='lg' weight='bold'>Missing Word</ThemeText>
-        <ThemeText size='md' weight='medium'>Question {step + 1} of {termData.length}</ThemeText>
-      </View>
+        <View style={styles.timer}>
+          <Timer setIsRunning={setTimerRunning} seconds={TIMER_SECONDS} isRunning={timerRunning} />
+        </View>
+        
+        <View style={styles.headerContainer}>
+          <ThemeText size='lg' weight='bold'>Missing Word</ThemeText>
+          <ThemeText size='md' weight='medium'>Question {step + 1} of {termData.length}</ThemeText>
+        </View>
 
-      <View>
-        <ScrollView 
-          ref={scrollViewRef}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onMomentumScrollEnd={handleScroll}
-          scrollEventThrottle={16}
-          scrollEnabled={false}
-        >
-          {termData.map((item, index) => (
-            <View key={index} style={{flex: 1, width: SCREEN_WIDTH, alignSelf: 'center'}}>
-              <MissingWordStep
-                setResponse={setResponse}
-                term={item.term}
-                explanation={item.shortExplanation}
-              />
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-
-      <View>
-        {response === CheckedWordReponseEnum.SUCCESS &&
         <View>
-          <Text style={styles.correctText}>Correct, Well Done !</Text>
-          <ButtonMain 
-            onPress={() => { 
-              scrollToStep(step + 1);
-              setResponse(null);
-            }}
-            title={step < termData.length - 1 ? "Next Question" : "Finish"}
+          <ScrollView 
+            ref={scrollViewRef}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onMomentumScrollEnd={handleScroll}
+            scrollEventThrottle={16}
+            scrollEnabled={false}
+          >
+            {termData.map((item, index) => (
+              <View key={index} style={{flex: 1, width: SCREEN_WIDTH, alignSelf: 'center'}}>
+                <MissingWordStep
+                  setResponse={setResponse}
+                  term={item.term}
+                  explanation={item.shortExplanation}
+                />
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+
+        <View>
+          {response === CheckedWordReponseEnum.SUCCESS &&
+          <View>
+            <Text style={styles.correctText}>Correct, Well Done !</Text>
+            <ButtonMain 
+              onPress={() => { 
+                scrollToStep(step + 1);
+                setResponse(null);
+              }}
+              title={step < termData.length - 1 ? "Next Question" : "Finish"}
+            />
+          </View>
+          }
+        </View>
+
+
+        <Popup isOpen={successPopupOpen} setIsOpen={() => {}}>
+          <VictoryBlock 
+            isOpen={successPopupOpen} 
+            handleSuccessPopup={handleSuccessPopup} 
+            coins={REWARD_COINS}
+            points={REWARD_POINTS}
           />
-        </View>
-        }
-      </View>
+        </Popup>
 
+        <Popup isOpen={failPopupOpen} setIsOpen={() => {}}>
+          <View style={styles.failContainer}>
+            {failPopupOpen && <ErrorAnimation />}
+            <Text style={styles.failTitle}>Failed</Text>
+            <ThemeText size='md' weight='medium' style={{paddingVertical: 10}}>No worries, with failures we learn as well!</ThemeText>
+            <ButtonMainSmall onPress={handleRetry} title='Try Again' />
+            <ThemeText style={{paddingVertical: 10}}>Or</ThemeText>
+            <ButtonSecondarySmall onPress={handleFailPopup} title='Return to Terms' />
+          </View>
+        </Popup>
 
-      <Popup isOpen={successPopupOpen} setIsOpen={() => {}}>
-        <VictoryBlock 
-          isOpen={successPopupOpen} 
-          handleSuccessPopup={handleSuccessPopup} 
-          coins={REWARD_COINS}
-          points={REWARD_POINTS}
-        />
-      </Popup>
-
-      <Popup isOpen={failPopupOpen} setIsOpen={() => {}}>
-        <View style={styles.failContainer}>
-          {failPopupOpen && <ErrorAnimation />}
-          <Text style={styles.failTitle}>Failed</Text>
-          <ThemeText size='md' weight='medium' style={{paddingVertical: 10}}>No worries, with failures we learn as well!</ThemeText>
-          <ButtonMainSmall onPress={handleRetry} title='Try Again' />
-          <ThemeText style={{paddingVertical: 10}}>Or</ThemeText>
-          <ButtonSecondarySmall onPress={handleFailPopup} title='Return to Terms' />
-        </View>
-      </Popup>
-
-      <Popup isOpen={timeOverPopupOpen} setIsOpen={() => {}}>
-        <View style={styles.failContainer}>
-          {timeOverPopupOpen && <ErrorAnimation />}
-          <Text style={styles.failTitle}>Failed</Text>
-          <ThemeText size='md' weight='medium' style={{paddingVertical: 10, paddingHorizontal: 60}}>Sorry, your time is over</ThemeText>
-          <ButtonMainSmall onPress={handleRetry} title='Try Again' />
-          <ThemeText style={{paddingVertical: 10}}>Or</ThemeText>
-          <ButtonSecondarySmall onPress={handleFailPopup} title='Return to Terms' />
-        </View>
-      </Popup>
-    </ThemedView>
+        <Popup isOpen={timeOverPopupOpen} setIsOpen={() => {}}>
+          <View style={styles.failContainer}>
+            {timeOverPopupOpen && <ErrorAnimation />}
+            <Text style={styles.failTitle}>Failed</Text>
+            <ThemeText size='md' weight='medium' style={{paddingVertical: 10, paddingHorizontal: 60}}>Sorry, your time is over</ThemeText>
+            <ButtonMainSmall onPress={handleRetry} title='Try Again' />
+            <ThemeText style={{paddingVertical: 10}}>Or</ThemeText>
+            <ButtonSecondarySmall onPress={handleFailPopup} title='Return to Terms' />
+          </View>
+        </Popup>
+      </ThemedView>
+    </KeyboardAvoidingWrapper>
   )
 }
 

@@ -72,6 +72,15 @@ const GameTab: React.FC<GameTabProps> = ({
     }
   }, [pressed]);
 
+  const handleNavigation = () => {
+    if (id === 0) router.push('/pages/quiz');
+    else if (id === 1) router.push('/pages/missing-word');
+    else if (id === 2) router.push('/pages/word-shuffle');
+    else if (id === 3) router.push('/pages/quiz');
+    else router.push('/(tabs)/games');
+  }
+
+
   return (
     <TouchableOpacity onPress={() => setPressed(id)} style={[styles.box, {
       borderColor: theme === 'dark' ? Colors.lowOpacityWhite : Colors.thirdly,
@@ -92,7 +101,7 @@ const GameTab: React.FC<GameTabProps> = ({
           {title}
         </Animated.Text>
         <Animated.View style={{ opacity: buttonOpacity }}>
-          <ButtonMainSmall onPress={() => router.push('/pages/word-shuffle')} title='Play' />
+          <ButtonMainSmall onPress={handleNavigation} title='Play' />
         </Animated.View>
       </View>
     </TouchableOpacity>
