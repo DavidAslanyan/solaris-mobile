@@ -6,6 +6,11 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeCustomProvider } from './contexts/ThemeContext';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs([
+  'Draggable: Support for defaultProps will be removed from function components',
+]);
 
 
 SplashScreen.preventAutoHideAsync();

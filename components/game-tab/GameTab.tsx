@@ -76,7 +76,7 @@ const GameTab: React.FC<GameTabProps> = ({
     if (id === 0) router.push('/pages/quiz');
     else if (id === 1) router.push('/pages/missing-word');
     else if (id === 2) router.push('/pages/word-shuffle');
-    else if (id === 3) router.push('/pages/quiz');
+    else if (id === 3) router.push('/pages/feed-monster');
     else router.push('/(tabs)/games');
   }
 
