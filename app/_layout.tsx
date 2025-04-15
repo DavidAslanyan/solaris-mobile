@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeCustomProvider } from './contexts/ThemeContext';
-import WordShuffle from './pages/word-shuffle';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -29,15 +28,14 @@ export default function RootLayout() {
   }
 
   return (
-    <WordShuffle />
-    // <QueryClientProvider client={queryClient}>
-    //   <ThemeCustomProvider>
-    //     <Stack screenOptions={{ headerShown: false }}>
-    //       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    //       <Stack.Screen name="+not-found" />
-    //     </Stack>
-    //     <StatusBar style="auto" />
-    //   </ThemeCustomProvider>
-    // </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeCustomProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+      </ThemeCustomProvider>
+    </QueryClientProvider>
   );
 }

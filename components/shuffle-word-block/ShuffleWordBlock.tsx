@@ -46,7 +46,7 @@ const ShuffleWord: React.FC<ShuffleWordStepProps> = ({
     }
   };
 
-  const handleComplete = () => {}
+  const handleComplete = () => {};
 
   return (
     <View style={styles.container}>

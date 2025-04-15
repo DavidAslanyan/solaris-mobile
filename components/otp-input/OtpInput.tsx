@@ -32,6 +32,8 @@ const OTPInput: React.FC<OTPInputProps> = ({
   const inputRefs = useRef<TextInput[]>([]);
   const { theme } = useAppTheme();
   const bakcgroundColor = theme === 'dark' ? Colors.darkerBackgorund : Colors.backPrimary;
+  const borderColor = theme === 'dark' ? Colors.thirdly : Colors.secondary;
+  const color = theme === 'dark' ? Colors.white : Colors.secondary;
 
   useEffect(() => {
     onChange(otp.join(''));
@@ -52,13 +54,19 @@ const OTPInput: React.FC<OTPInputProps> = ({
   };
 
   const handleBackspace = (index: number, char: string) => {
-    if (char === '' && index > 0) {
-      const updatedOtp = [...otp];
+    const updatedOtp = [...otp];
+    if (char !== '') {
+      updatedOtp[index] = '';
+      setOTP(updatedOtp);
+      return;
+    }
+    if (index > 0) {
       updatedOtp[index - 1] = '';
       setOTP(updatedOtp);
       inputRefs.current[index - 1]?.focus();
     }
   };
+  
 
   const match = response === ResponseEnum.SUCCESS;
 
@@ -77,8 +85,8 @@ const OTPInput: React.FC<OTPInputProps> = ({
                 height: smallDevice ? 40 : 54,
                 fontSize: smallDevice ? 14 : 18,
                 backgroundColor: match ? Colors.secondary : bakcgroundColor,
-                color: match ? Colors.primary : Colors.secondary,
-                borderColor: Colors.secondary,
+                color: match ? Colors.primary : color,
+                borderColor: borderColor,
               },
             ]}
             maxLength={1}
