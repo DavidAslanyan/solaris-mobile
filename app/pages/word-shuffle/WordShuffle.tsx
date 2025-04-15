@@ -10,8 +10,6 @@ import { DifficultyLevel } from '@/utilities/enums/difficulty-level.enum'
 import { fetchTermsLevelBased } from '@/utilities/functions/fetch-terms-level-based'
 import { shuffleArray } from '@/utilities/functions/shuffle-array'
 import { PROGRESS_POINTS } from '@/constants/global-data'
-import MissingWordStep from '@/components/missing-word-step'
-import { CheckedWordReponseEnum } from '@/components/missing-word-step/MissingWordStep'
 import ButtonMainSmall from '@/components/buttons/button-main-small'
 import { Colors } from '@/constants/Colors'
 import { GAME } from '@/constants/game-titles'
@@ -19,18 +17,20 @@ import Popup from '@/components/popup'
 import VictoryBlock from '@/components/victory-block'
 import ErrorAnimation from '@/components/lottie-animations/lottie-error'
 import ButtonSecondarySmall from '@/components/buttons/button-secondary-small'
+import { ResponseEnum } from '@/utilities/enums/response.enum'
+import ShuffleWord from '@/components/shuffle-word-block/ShuffleWordBlock'
 
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const rules = [
-  "A short explanation of one the learned terms will be shown to you",
-  "However, one of the words will be missing",
-  "Select the correct explanation to move forward.",
-  "You will have to type the missing word by yourself and click check",
-  "You have 1 minute to complete all 5 terms",
-  "That's it, continue the same steps for the rest of the terms",
-  "If you passed all, Congrats, you won Game 2",
+  "You will see a term, but it is shuffled, menaing the characters are in wrong order",
+  "Your job is to recongnize the decoded term, and give it to us",
+  "As a Hint a short explanation will be shown to you",
+  "Do not worry about case sensitivity",
+  "However Note, as terms can consist of more than one word, you will need to type spaces as well",
+  "Tha's it, continue the same steps for the rest of the terms",
+  "If you passed all, Congrats, you won Game 3",
   "You are ready to proceed to the next games"
 ];
 
@@ -38,18 +38,18 @@ const TIMER_SECONDS = 60;
 const REWARD_COINS = 5;
 const REWARD_POINTS = 175;
 
-const MissingWord = () => {
+const WordShuffle = () => {
   const router = useRouter();
   const user = {
     progress: 0,
     difficultyLevel: DifficultyLevel.EASY
   };
   const gamesPassed: string[] = [];
-  const [gameLive, setGameLive] = useState<boolean>(false);
+  const [gameLive, setGameLive] = useState<boolean>(true);
 
   const [step, setStep] = useState<number>(0);
   const [timerRunning, setTimerRunning] = useState<boolean>(true);
-  const [response, setResponse] = useState<CheckedWordReponseEnum | null>(null);
+  const [response, setResponse] = useState<ResponseEnum | null>(null);
 
   const [successPopupOpen, setSuccessPopupOpen] = useState<boolean>(false);
   const [failPopupOpen, setFailPopupOpen] = useState<boolean>(false);
@@ -68,14 +68,14 @@ const MissingWord = () => {
   }, [timerRunning]);
 
   useEffect(() => {
-    if (response === CheckedWordReponseEnum.FAIL) {
+    if (response === ResponseEnum.FAIL) {
       setTimerRunning(false);
       setFailPopupOpen(true);
     }
   }, [response]);
 
   const handleRetry = () => {
-    router.replace('/pages/missing-word');
+    router.replace('/pages/word-shuffle');
   }
 
   const handleFailPopup = () => {
@@ -83,7 +83,7 @@ const MissingWord = () => {
   }
 
   const handleSuccessPopup = () => {
-    if (!gamesPassed.includes(GAME.MISSING_WORD)) {
+    if (!gamesPassed.includes(GAME.WORD_SHUFFLE)) {
       // savePassedGame();
     } else {
       router.replace('/(tabs)/games');
@@ -117,8 +117,8 @@ const MissingWord = () => {
         </View>
         <View>
           <View>
-            <ThemeText size='xl' weight='bold' style={{paddingVertical: 10, textAlign: 'center'}}>Game 2 - Missing Word</ThemeText>
-            <ThemeText size='md' weight='semibold' style={{paddingVertical: 10, textAlign: 'center'}}>Find the missing words in the terms' explanations to test your recently learnt</ThemeText>
+            <ThemeText size='xl' weight='bold' style={{paddingVertical: 10, textAlign: 'center'}}>Game 3 - Word Shuffle</ThemeText>
+            <ThemeText size='md' weight='semibold' style={{paddingVertical: 10, textAlign: 'center'}}>Decode the terms to test your recently learnt</ThemeText>
             <View style={styles.rules}>
               {rules.map((data, index) => (
                 <Fragment key={index}>
@@ -145,14 +145,18 @@ const MissingWord = () => {
         <ButtonBack text='Back' />
       </View>
 
-      <View style={styles.timer}>
+      <View style={[styles.timer, {
+        paddingTop: SCREEN_WIDTH < 390 ? 20 : 120,
+      }]}>
         <Timer setIsRunning={setTimerRunning} seconds={TIMER_SECONDS} isRunning={timerRunning} />
       </View>
       
       <View style={styles.headerContainer}>
-        <ThemeText size='lg' weight='bold'>Missing Word</ThemeText>
+        <ThemeText size='lg' weight='bold'>Word Shuffle</ThemeText>
         <ThemeText size='md' weight='medium'>Question {step + 1} of {termData.length}</ThemeText>
       </View>
+
+      <ThemeText size='md' weight='semibold' style={{textAlign: 'center'}}>Can you figure this out?</ThemeText>
 
       <View>
         <ScrollView 
@@ -165,19 +169,21 @@ const MissingWord = () => {
           scrollEnabled={false}
         >
           {termData.map((item, index) => (
-            <View key={index} style={{flex: 1, width: SCREEN_WIDTH, alignSelf: 'center'}}>
-              <MissingWordStep
-                setResponse={setResponse}
-                term={item.term}
-                explanation={item.shortExplanation}
+            <View key={index} style={{ width: SCREEN_WIDTH }}>
+              <ShuffleWord 
+                response={response}
+                setResponse={setResponse} 
+                term={'cloud computing'} 
+                explanation={item.shortExplanation} 
               />
             </View>
           ))}
         </ScrollView>
       </View>
 
+
       <View>
-        {response === CheckedWordReponseEnum.SUCCESS &&
+        {response === ResponseEnum.SUCCESS &&
         <View>
           <Text style={styles.correctText}>Correct, Well Done !</Text>
           <ButtonMain 
@@ -245,7 +251,6 @@ const styles = StyleSheet.create({
     zIndex: 10
   },
   timer: {
-    paddingTop: 150,
     alignItems: 'center',
   },
   headerContainer: {
@@ -258,6 +263,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     fontSize: 18,
     textAlign: 'center',
+    paddingTop: 10,
     paddingBottom: 18
   },
   failContainer: {
@@ -271,5 +277,5 @@ const styles = StyleSheet.create({
   }
 })
 
-export default MissingWord;
+export default WordShuffle;
 
