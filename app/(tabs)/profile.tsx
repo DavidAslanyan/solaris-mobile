@@ -22,6 +22,8 @@ import Popup from '@/components/popup';
 import FailIcon from '@/components/icons/FailIcon';
 import ButtonSecondarySmall from '@/components/buttons/button-secondary-small';
 import ButtonMainSmall from '@/components/buttons/button-main-small';
+import SelectDifficulty from '@/components/select-difficulty/SelectDifficulty';
+import { DifficultyLevel } from '@/utilities/enums/difficulty-level.enum';
 
 
 enum PopupOption {
@@ -36,7 +38,8 @@ const Profile = () => {
     avatar: require("@/assets/images/user-avatars/male-1.png"),
     frame: 'def',
     points: 125,
-    progress: 5
+    progress: 5,
+    difficultyLevel: DifficultyLevel.EASY
   }
 
   const { current } = determinePrize(data.points);
@@ -155,7 +158,7 @@ const Profile = () => {
         />
         <OptionTab
           title='Select Difficulty'
-          onPress={() => {}}
+          onPress={() => setDifficultyPopupOpen(true)}
         />
       </View>
 
@@ -198,6 +201,13 @@ const Profile = () => {
             <ButtonMainSmall title={popup === PopupOption.deleteAccount ? "Delete My Account" : "Sign Out"} />
           </View>
         </View>
+      </Popup>
+
+      <Popup isOpen={difficultyPopupOpen} setIsOpen={setDifficultyPopupOpen}>
+        <SelectDifficulty 
+          difficulty={data.difficultyLevel}
+          setDifficultyPopupOpen={setDifficultyPopupOpen}
+        />
       </Popup>
       
     </ParallaxScrollView>
