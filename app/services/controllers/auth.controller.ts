@@ -2,13 +2,15 @@ import { LoginUserFormType, RegisterUserFormType, UpdateUserFormType } from "@/u
 import { API_URLS } from "@/constants/api-endpoints";
 import { DifficultyLevel } from "@/utilities/enums/difficulty-level.enum";
 import axios from "axios"
+import { saveTokensInAsyncStorage } from "@/utilities/functions/crud-tokens-storage";
+import axiosInstance from "@/utilities/functions/axios-instance";
 
 const id  = "e1630445-3f60-4b4c-b7a3-37ef7aba3bbb";
 
 
 export const getUser = async () => {
   try {
-    const response = await axios.get(`${API_URLS.AUTH}`);
+    const response = await axiosInstance.get(`${API_URLS.AUTH}`);
     return response.data;
   } catch (error) {
     console.log("There was an error fetching the data:", error);
@@ -42,12 +44,12 @@ export const postUser = async (data: RegisterUserFormType) => {
 export const loginUser = async (data: LoginUserFormType) => {
   try {
     const response = await axios.post(`${API_URLS.LOGIN}`, data);
-    // if (response.data.data.tokens) {
-    //   saveTokensInSecureStorage(
-    //     response.data.data.tokens.accessToken,
-    //     response.data.data.tokens.refreshToken
-    //   );
-    // }
+    if (response.data.data.tokens) {
+      await saveTokensInAsyncStorage(
+        response.data.data.tokens.accessToken,
+        response.data.data.tokens.refreshToken
+      );
+    }
     return response.data;
   } catch(error) {
     console.log("Failed to login the user:", error);
