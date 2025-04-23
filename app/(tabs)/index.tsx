@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { Link, Redirect } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import ThemeText from '@/components/themes/theme-text';
 import AnimatedHeader from '@/components/animated-header/AnimatedHeader';
@@ -16,15 +16,18 @@ import { ThemedView } from '@/components/ThemedView';
 import ButtonStudy from '@/components/buttons/button-study';
 import ProgressBar from '@/components/progress-bar/ProgressBar';
 import LevelMap from '@/components/level-map/LevelMap';
+import useGetUser from '@/utilities/hooks/useGetUser';
+import Loader from '@/components/loader';
 
 
 export default function HomeScreen() {
+  const { user, isLoading } = useGetUser();
   const userMappedData = {
-    username: "David Aslanyan",
-    progress: 5, 
-    points: 24000,
-    coins: 1200,
-    difficultyLevel: 'easy'
+    username: user?.firstName,
+    progress: user?.progress, 
+    points: user?.points,
+    coins: user?.coins,
+    difficultyLevel: user?.difficultyLevel
   }
 
   const { current, next } = determinePrize(userMappedData?.points);
@@ -35,7 +38,6 @@ export default function HomeScreen() {
   const termsLevelBased = fetchTermsLevelBased(DifficultyLevel.EASY); 
   const termData = termsLevelBased.slice(curProgress, curProgress + PROGRESS_POINTS);
 
-  const user = true;
   const [inputText, setInputText] = useState<string>("");
   
   const handleTextChange = (newText: string) => {
@@ -43,11 +45,16 @@ export default function HomeScreen() {
   };
 
   const handleSearchSubmit = () => {
-   
+    if (inputText.length > 0) {
+      router.push({
+        pathname: '/pages/search',
+        params: { value: inputText },
+      });
+    }
   };
 
-  if (!user) {
-    return <Redirect href="/pages/login" />;
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (

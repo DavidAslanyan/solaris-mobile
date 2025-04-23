@@ -1,12 +1,19 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import { selectFrameColor } from '@/utilities/functions/select-frame-color'
+import useGetUser from '@/utilities/hooks/useGetUser';
+import { filterAvatar } from '@/utilities/functions/filter-avatars';
+import Loader from '../loader';
 
 const Avatar = () => {
+  const { user, isLoading } = useGetUser();
+  
   const data = {
-    avatarUrl: require("@/assets/images/user-avatars/male-1.png"),
-    frame: "def"
+    avatarUrl: user?.avatar && filterAvatar(user?.avatar),
+    frame: user?.frame
   }
+
+  if (isLoading) return <Loader />;
 
   return (
     <View style={[styles.frame, { borderColor: selectFrameColor(data.frame) } ]}>
