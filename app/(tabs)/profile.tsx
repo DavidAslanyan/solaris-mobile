@@ -24,7 +24,6 @@ import ButtonSecondarySmall from '@/components/buttons/button-secondary-small';
 import ButtonMainSmall from '@/components/buttons/button-main-small';
 import SelectDifficulty from '@/components/select-difficulty/SelectDifficulty';
 import { DifficultyLevel } from '@/utilities/enums/difficulty-level.enum';
-import useGetUser from '@/utilities/hooks/useGetUser';
 
 
 enum PopupOption {
@@ -33,9 +32,6 @@ enum PopupOption {
 };
 
 const Profile = () => {  
-  const { user } = useGetUser();
-  console.log('data: ', user)
-  
   const data = {
     username: "David Aslanyan",
     imageUrl: require("@/assets/images/backgrounds/cover-1.jpg"),

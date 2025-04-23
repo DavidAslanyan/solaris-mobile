@@ -1,5 +1,6 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
+import { View, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import { useLocalSearchParams } from 'expo-router';
 import CloseIcon from '@/components/icons/CloseIcon';
 import SearchIcon from '@/components/icons/navbar-icons/SearchIcon';
 import { Colors } from '@/constants/Colors';
@@ -12,13 +13,15 @@ import SearchTermItem from '@/components/search-item-term';
 import ThemeText from '@/components/themes/theme-text';
 import notFoundHero from '@/components/lottie-animations/not-found-hero.json';
 import LottieAnimation from '@/components/lottie-animations/lottie-animation';
+import ButtonBack from '@/components/buttons/button-back';
 
 const data = [...easyTermsData, ...mediumTermsData, ...hardTermsData];
 
 const Search = () => {
+  const { value } = useLocalSearchParams();
   const [allTermsData] = useState<TermType[]>(data); 
   const [termsData, setTermsData] = useState<TermType[]>(data);
-  const [inputText, setInputText] = useState<string>("");
+  const [inputText, setInputText] = useState<string>(value.toString() || "");
 
   useEffect(() => {
     const filtered = allTermsData.filter((data) => 
@@ -38,6 +41,10 @@ const Search = () => {
     
   return (
     <ThemedView style={styles.container}>
+      <View style={styles.backButton}>
+        <ButtonBack text='Back' />
+      </View>
+      <ThemeText weight='bold' size='xl' style={styles.title}>Search</ThemeText>
        <View style={styles.searchContainer}>
         <View>
           <View style={styles.searchContent}>
@@ -90,8 +97,17 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
+  title: {
+    paddingTop: '15%',
+    paddingBottom: '3%',
+    textAlign: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    top: '6%',
+    zIndex: 50
+  },
   searchContainer: {
-    marginTop: '15%',
     marginHorizontal: '5%',
     backgroundColor: Colors.white,
     shadowColor: '#000',
