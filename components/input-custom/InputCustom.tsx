@@ -64,6 +64,7 @@ const InputCustom: React.FC<InputProps> = ({
         )}
 
         <TextInput
+          autoCapitalize='none'
           maxLength={maxLength}
           secureTextEntry={isPassword ? !visible : false}
           placeholder={placeholder}

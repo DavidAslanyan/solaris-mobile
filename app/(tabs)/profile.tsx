@@ -31,7 +31,7 @@ enum PopupOption {
   deleteAccount = "deleteAccount"
 };
 
-const Profile = () => {
+const Profile = () => {  
   const data = {
     username: "David Aslanyan",
     imageUrl: require("@/assets/images/backgrounds/cover-1.jpg"),
@@ -60,6 +60,7 @@ const Profile = () => {
     if (popup === PopupOption.signOut) {
       try {
         // logout();
+        console.log('sigout')
         router.replace('/pages/login');
       } catch(error) {
         console.log("Failed to sign out", error);
@@ -198,7 +199,7 @@ const Profile = () => {
           ?</ThemeText>
           <View style={styles.buttonContainer}>
             <ButtonSecondarySmall onPress={() => setPopup(null)} title='Cancel' />
-            <ButtonMainSmall title={popup === PopupOption.deleteAccount ? "Delete My Account" : "Sign Out"} />
+            <ButtonMainSmall onPress={handlePopupPress} title={popup === PopupOption.deleteAccount ? "Delete My Account" : "Sign Out"} />
           </View>
         </View>
       </Popup>
