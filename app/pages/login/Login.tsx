@@ -1,4 +1,4 @@
-import { StyleSheet, View, useColorScheme } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { LoginUserFormType } from '@/utilities/types/auth.type';
 import { ResponseEnum } from '@/utilities/enums/response.enum';
@@ -17,12 +17,15 @@ import { loginUserMutation } from '../../services/queries/auth.query';
 import { HttpStatusCode } from '@/utilities/enums/status-codes.enum';
 import Popup from '@/components/popup';
 import { storeUserInAsyncStorage } from '@/utilities/functions/crud-tokens-storage';
+import Logo from '@/components/logo';
+import { useAppTheme } from '@/app/contexts/ThemeContext';
 
 
 const Login = () => {
   const router = useRouter();
-  const colorScheme = useColorScheme();
-  const themeColor = colorScheme === 'light' ? Colors.secondary : Colors.white;
+  const { theme } = useAppTheme();
+  const themeColor = theme === 'light' ? Colors.secondary : Colors.white;
+  const bgColor = theme === 'light' ? Colors.backPrimary : Colors.darkerBackgorund;
   const [formData, setFormData] = useState<LoginUserFormType>({
     email: "",
     password: ""
@@ -57,7 +60,7 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e: any) => {    
+  const handleSubmit = () => {    
     if (validateInputs()) {
       handleLogin(formData);
     }
@@ -88,43 +91,64 @@ const Login = () => {
     return true;
   }
 
+  const handleSignUpPress = () => {
+    router.push('/pages/register');
+  }
+
   
   return (
-    <ThemeView style={styles.container}>
+    <ThemeView style={{backgroundColor: bgColor}}>
       <View style={styles.logoContainer}>
-        <ThemeText weight='bold' size='2xl'>LOGO</ThemeText>
+        <View style={styles.logo}>
+          <Logo width={120} height={60} />
+        </View>
       </View>
 
-      <View style={styles.inputContainer}>
-        <InputCustom
-          maxLength={120}
-          onChange={(text) => handleFormChange('email', text)}
-          value={formData.email}
-          label="Email"
-          icon={<EmailIcon color={themeColor} />}
-          placeholder="example@gmail.com"
-        />
+      <View style={[styles.container, {
+        backgroundColor: bgColor
+      }]}>
+        <View style={styles.inputContainer}>
+          <InputCustom
+            maxLength={120}
+            onChange={(text) => handleFormChange('email', text)}
+            value={formData.email}
+            label="Email"
+            icon={<EmailIcon color={themeColor} />}
+            placeholder="example@gmail.com"
+          />
 
-        <InputCustom
-          isPassword={true}
-          onChange={(text) => handleFormChange('password', text)}
-          value={formData.password}
-          label="Password"
-          icon={<LockIcon color={themeColor} />}
-        />
+          <InputCustom
+            isPassword={true}
+            onChange={(text) => handleFormChange('password', text)}
+            value={formData.password}
+            label="Password"
+            icon={<LockIcon color={themeColor} />}
+          />
+        </View>
+
+        {errorMessage &&
+        <ErrorMessage>{errorMessage}</ErrorMessage>
+        }
+
+        <View style={styles.buttonConainer}>
+          <ButtonMain 
+            onPress={handleSubmit} 
+            title={"Sign In"} 
+          />
+        </View>
       </View>
 
-      {errorMessage &&
-      <ErrorMessage>{errorMessage}</ErrorMessage>
-      }
-
-      <ThemeText style={styles.haveAccountText}>Don't have an account? <Link style={styles.linkText} href={'/pages/register'}>Sign Up</Link></ThemeText>
- 
-      <View style={styles.buttonConainer}>
-        <ButtonMain 
-          onPress={handleSubmit} 
-          title={"Sign In"} 
-        />
+      <View style={{
+        position: 'absolute',
+        bottom: '3%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        alignItems: 'center'
+      }}>
+        <ThemeText style={styles.haveAccountText}>Don't have an account? </ThemeText>
+        <TouchableOpacity style={styles.signUpButton} onPress={handleSignUpPress}>
+          <Text style={styles.linkText}>Sign Up</Text>
+        </TouchableOpacity>
       </View>
 
       <Popup
@@ -142,12 +166,29 @@ const Login = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: '12%',
+    paddingTop: '8%',
+    borderTopLeftRadius: '8%',
+    borderTopRightRadius: '8%',
+    position: 'relative',
+    bottom: '2%',
+    justifyContent: 'space-between'
   },
 
   logoContainer: {
     alignSelf: 'center',
-    paddingVertical: '10%'
+    paddingTop: '25%',
+    paddingBottom: '13%',
+    width: '100%',
+    backgroundColor: Colors.primary
+  },
+
+  logo: {
+    alignSelf: 'center'
+  },
+
+  signUpButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 5
   },
 
   inputContainer: {
@@ -159,13 +200,12 @@ const styles = StyleSheet.create({
   },
 
   haveAccountText: {
-    paddingHorizontal: '4%',
-    paddingTop: '2%'
+    fontWeight: '500'
   },
 
   linkText: {
     fontWeight: "700",
-    color: Colors.primary
+    color: Colors.primary,
   },
 
   errorMessage: {
