@@ -1,6 +1,7 @@
-"use client";
 import { useState, useEffect } from "react";
 import { getUserQuery } from "@/app/services/queries/auth.query";
+import { getUserFromAsyncStorage, storeUserInAsyncStorage } from "../functions/crud-tokens-storage";
+
 
 const useGetUser = () => {
   const [user, setUser] = useState<any>(null);
@@ -8,19 +9,23 @@ const useGetUser = () => {
   const { data: apiData, isLoading: apiLoading, isError, refetch } = getUserQuery();
 
   useEffect(() => {
-    // const localStorageData = getUserFromLocalStorage();
-    // if (localStorageData) {
-    //   setUser(localStorageData); 
-    //   setIsLoading(false); 
-    // } else {
-    //   refetch();
-    // }
+    const getUser = async () => {
+      const asyncStorageData = await getUserFromAsyncStorage();
+      if (asyncStorageData) {
+        setUser(asyncStorageData); 
+        setIsLoading(false); 
+      } else {
+        console.log('Refetched');
+        refetch();
+      }
+    }
+    getUser();
   }, []);
   
   useEffect(() => {
     if (apiData) {
       setUser(apiData.data);  
-      // storeUserInLocalStorage(apiData.data);  
+      storeUserInAsyncStorage(apiData.data);  
       setIsLoading(false);  
     }
   }, [apiData]);
