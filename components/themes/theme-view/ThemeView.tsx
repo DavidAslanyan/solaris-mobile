@@ -19,7 +19,7 @@ interface ThemeViewProps {
 
 const ThemeView: React.FC<ThemeViewProps> = ({ children, style }) => {
   const colorScheme = useColorScheme();
-  const themeBackground = colorScheme === 'light' ? Colors.lightBackground : Colors.darkBackground;
+  const themeBackground = colorScheme === 'light' ? Colors.lightBackground : Colors.darkerBackgorund;
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 

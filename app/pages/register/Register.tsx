@@ -1,5 +1,5 @@
-import { View, StyleSheet, useColorScheme, TouchableOpacity, Modal } from 'react-native'
-import { Link, router } from 'expo-router';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native'
+import { router } from 'expo-router';
 import React, { useState } from 'react'
 import InputCustom from '@/components/input-custom/InputCustom';
 import EmailIcon from '@/components/icons/EmailIcon';
@@ -21,12 +21,14 @@ import { registerUserMutation } from '../../services/queries/auth.query';
 import { RegisterUserFormType } from '@/utilities/types/auth.type';
 import { HttpStatusCode } from '@/utilities/enums/status-codes.enum';
 import Popup from '@/components/popup';
-
+import Logo from '@/components/logo';
+import { useAppTheme } from '@/app/contexts/ThemeContext';
 
 
 const Register = () => {
-  const colorScheme = useColorScheme();
-  const themeColor = colorScheme === 'light' ? Colors.secondary : Colors.white;
+  const { theme } = useAppTheme();
+  const themeColor = theme === 'light' ? Colors.secondary : Colors.white;
+  const bgColor = theme === 'light' ? Colors.backPrimary : Colors.darkerBackgorund;
   const [step, setStep] = useState<number>(0);
   
   const [formData, setFormData] = useState({
@@ -96,9 +98,7 @@ const Register = () => {
     return true;
   }
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    
+  const handleSubmit = () => {    
     if (validateFirstStepInputs()) {
       const finalFormData = { ...formData, difficultyLevel, avatarUrl: avatar };
       handleRegister(finalFormData);
@@ -119,100 +119,119 @@ const Register = () => {
     setModalVisible(null);
     router.push('/pages/login');
   }
-
   
   return (
-    <ThemeView style={styles.container}>
+    <ThemeView style={{backgroundColor: bgColor}}>
       <View style={styles.animationContainer}>
-        <ThemeText weight='bold' size='2xl'>LOGO</ThemeText>
+        <View style={styles.logo}>
+          <Logo width={120} height={60} />
+        </View>
       </View>
-      <ThemeText style={styles.title} size='lg' weight='bold'>
-        {step === 0 ? "Become a member of our great community" : "One final step" }
-      </ThemeText>
 
-      {step === 1 &&
-        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-          <View style={styles.arrow}>
-            <ArrowIcon width={24} />
-          </View>
-          <ThemeText weight='bold'>Back</ThemeText>
-        </TouchableOpacity>
-      } 
+      <View style={[styles.container, {
+        backgroundColor: bgColor
+      }]}>
+        <ThemeText style={styles.title} size='lg' weight='bold'>
+          {step === 0 ? "Join Us" : "One final step" }
+        </ThemeText>
 
-      {step === 0
-      ? 
-      <View style={styles.inputContainer}>
-        <View style={styles.inputsTop}>
-          <View style={styles.input}>
-            <InputCustom 
-              maxLength={25}
-              onChange={(text) => handleFormChange('firstName', text)}
-              value={formData.firstName}
-              label="First Name"
-              placeholder="John"
-              />
+        {step === 1 &&
+          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+            <View style={styles.arrow}>
+              <ArrowIcon width={24} />
+            </View>
+            <ThemeText weight='bold'>Back</ThemeText>
+          </TouchableOpacity>
+        } 
+
+        {step === 0
+        ? 
+        <View style={styles.inputContainer}>
+          <View style={styles.inputsTop}>
+            <View style={styles.input}>
+              <InputCustom 
+                maxLength={25}
+                onChange={(text) => handleFormChange('firstName', text)}
+                value={formData.firstName}
+                label="First Name"
+                placeholder="John"
+                autoCapitalize
+                />
+            </View>
+
+            <View style={styles.input}>
+              <InputCustom 
+                maxLength={25}
+                onChange={(text) => handleFormChange('lastName', text)}
+                value={formData.lastName}
+                label="Last Name"
+                placeholder="Doe"
+                autoCapitalize
+                />
+            </View>
           </View>
 
-          <View style={styles.input}>
-            <InputCustom 
-              maxLength={25}
-              onChange={(text) => handleFormChange('lastName', text)}
-              value={formData.lastName}
-              label="Last Name"
-              placeholder="Doe"
-              />
-          </View>
+          <InputCustom
+            maxLength={120}
+            onChange={(text) => handleFormChange('email', text)}
+            value={formData.email}
+            label="Email"
+            icon={<EmailIcon color={themeColor} />}
+            placeholder="example@gmail.com"
+          />
+
+          <InputCustom
+            isPassword={true}
+            onChange={(text) => handleFormChange('password', text)}
+            value={formData.password}
+            label="Password"
+            icon={<LockIcon color={themeColor} />}
+          />
+
+          <InputCustom
+            isPassword={true}
+            onChange={(text) => handleFormChange('rPassword', text)}
+            value={formData.rPassword}
+            label="Confirm Password"
+            icon={<LockIcon color={themeColor} />}
+          />
+        </View>
+        : 
+        <View style={styles.inputContainer}>
+          <SignUpStep
+            avatar={avatar}
+            setAvatar={setAvatar}
+            difficultyLevel={difficultyLevel}
+            setDifficultyLevel={setDifficultyLevel}
+          />
+        </View>
+        }
+
+        {errorMessage &&
+        <ErrorMessage>{errorMessage}</ErrorMessage>
+        }
+        <View style={styles.buttonConainer}>
+          <ButtonMain 
+            onPress={step === 0 ? handleContniue : handleSubmit} 
+            title={"Sign Up"} 
+          />
         </View>
 
-        <InputCustom
-          maxLength={120}
-          onChange={(text) => handleFormChange('email', text)}
-          value={formData.email}
-          label="Email"
-          icon={<EmailIcon color={themeColor} />}
-          placeholder="example@gmail.com"
-        />
-
-        <InputCustom
-          isPassword={true}
-          onChange={(text) => handleFormChange('password', text)}
-          value={formData.password}
-          label="Password"
-          icon={<LockIcon color={themeColor} />}
-        />
-
-        <InputCustom
-          isPassword={true}
-          onChange={(text) => handleFormChange('rPassword', text)}
-          value={formData.rPassword}
-          label="Confirm Password"
-          icon={<LockIcon color={themeColor} />}
-        />
-      </View>
-      : 
-      <View style={styles.inputContainer}>
-        <SignUpStep
-          avatar={avatar}
-          setAvatar={setAvatar}
-          difficultyLevel={difficultyLevel}
-          setDifficultyLevel={setDifficultyLevel}
-         />
-      </View>
-      }
-
-      {errorMessage &&
-      <ErrorMessage>{errorMessage}</ErrorMessage>
-      }
-
-      <ThemeText style={styles.haveAccountText}>Already have an account? <Link style={styles.linkText} href={'/pages/login'}>Login</Link></ThemeText>
- 
-      <View style={styles.buttonConainer}>
-        <ButtonMain 
-          onPress={step === 0 ? handleContniue : handleSubmit} 
-          title={"Sign Up"} 
-        />
       </View>
 
+      <View style={{
+       position: 'absolute',
+       bottom: '3%',
+       alignSelf: 'center',
+       flexDirection: 'row',
+       alignItems: 'center'
+      }}>
+        <ThemeText style={styles.haveAccountText}>Already have an account? </ThemeText>
+        <TouchableOpacity style={styles.signUpButton} onPress={handleLoginPress}>
+          <Text style={styles.linkText}>Login</Text>
+        </TouchableOpacity>
+      </View>
+  
       <Popup
         isOpen={modalVisible !== null}
         setIsOpen={setModalVisible}
@@ -240,12 +259,28 @@ const Register = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: '12%',
+    paddingTop: '8%',
+    borderTopLeftRadius: '5%',
+    borderTopRightRadius: '5%',
+    position: 'relative',
+    bottom: '3%'
   },
 
   animationContainer: {
     alignSelf: 'center',
-    paddingVertical: '10%'
+    paddingTop: '23%',
+    paddingBottom: '15%',
+    width: '100%',
+    backgroundColor: Colors.primary
+  },
+
+  signUpButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 5
+  },
+
+  logo: {
+    alignSelf: 'center'
   },
 
   title: {
@@ -276,12 +311,12 @@ const styles = StyleSheet.create({
 
   haveAccountText: {
     paddingHorizontal: '4%',
-    paddingTop: '2%'
+    paddingTop: '2%',
   },
 
   linkText: {
     fontWeight: "700",
-    color: Colors.primary
+    color: Colors.primary,
   },
 
   errorMessage: {

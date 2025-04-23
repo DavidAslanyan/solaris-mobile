@@ -18,6 +18,7 @@ type InputProps = {
   error?: string;
   required?: boolean;
   disabled?: boolean;
+  autoCapitalize?: boolean;
 };
 
 const MAX_CHARS = 40;
@@ -34,11 +35,12 @@ const InputCustom: React.FC<InputProps> = ({
   error = '',
   required = false,
   disabled = false,
+  autoCapitalize = false
 }) => {
   const [visible, setVisible] = useState<boolean>(false);
   const { theme } = useAppTheme();
   const themeColor = theme === 'light' ? Colors.secondary : Colors.white;
-
+  const placeholderColor = theme === 'light' ? Colors.thirdly : Colors.darkThirdly;
   
   return (
     <View style={{ marginVertical: 7 }}>
@@ -64,10 +66,15 @@ const InputCustom: React.FC<InputProps> = ({
         )}
 
         <TextInput
-          autoCapitalize='none'
+          autoCapitalize={autoCapitalize ? 'words' : 'none'}
+          autoComplete="off"
+          textContentType="none"
+          importantForAutofill="no"
+          autoCorrect={false}
           maxLength={maxLength}
           secureTextEntry={isPassword ? !visible : false}
           placeholder={placeholder}
+          placeholderTextColor={placeholderColor}
           value={value}
           onChangeText={onChange}
           onBlur={onBlur}

@@ -8,6 +8,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeCustomProvider } from './contexts/ThemeContext';
 import { LogBox } from 'react-native';
 import useSocket from '@/utilities/hooks/useSocket';
+import Register from './pages/register';
+import Login from './pages/login';
 
 
 LogBox.ignoreLogs([

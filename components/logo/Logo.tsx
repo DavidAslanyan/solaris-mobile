@@ -1,13 +1,21 @@
 import { View, Image } from 'react-native'
-import React from 'react'
 
-const Logo = () => {
+
+type LogoProps = {
+  width?: number;
+  height?: number;
+}
+
+const Logo: React.FC<LogoProps> = ({
+  width = 60,
+  height = 30
+}) => {
   return (
     <View>
       <Image 
         style={{
-          width: 60,
-          height: 30
+          width: width,
+          height: height
         }}
         source={require('@/assets/images/logo.png')} 
         />
