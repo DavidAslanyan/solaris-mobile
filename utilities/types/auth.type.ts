@@ -26,3 +26,21 @@ export type UpdateUserFormType = {
   backgroundUrl: string
 }
 
+
+export interface UserState {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  difficultyLevel: string;
+  avatar: string;
+  background: string;
+  frame: string;
+  coins: number;
+  points: number;
+  progress: number;
+  gamesPassed: string[];
+  ownedAvatars: string[];
+  ownedBackgrounds: string[];
+  ownedFrames: string[];
+}

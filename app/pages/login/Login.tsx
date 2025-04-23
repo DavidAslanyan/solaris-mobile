@@ -1,4 +1,4 @@
-import { StyleSheet, View, useColorScheme, Modal } from 'react-native'
+import { StyleSheet, View, useColorScheme } from 'react-native'
 import React, { useState } from 'react'
 import { LoginUserFormType } from '@/utilities/types/auth.type';
 import { ResponseEnum } from '@/utilities/enums/response.enum';
@@ -11,11 +11,12 @@ import LockIcon from '@/components/icons/LockIcon';
 import { Colors } from '@/constants/Colors';
 import ErrorMessage from '@/components/error-message';
 import ButtonMain from '@/components/buttons/button-main';
-import { Link, router, useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import ErrorAnimation from '@/components/lottie-animations/lottie-error';
 import { loginUserMutation } from '../../services/queries/auth.query';
 import { HttpStatusCode } from '@/utilities/enums/status-codes.enum';
 import Popup from '@/components/popup';
+import { storeUserInAsyncStorage } from '@/utilities/functions/crud-tokens-storage';
 
 
 const Login = () => {
@@ -42,6 +43,7 @@ const Login = () => {
     loginUser(formData, {
       onSuccess: (data) => {
         if (data?.status === HttpStatusCode.ACCEPTED) {
+          storeUserInAsyncStorage(data.data.user);
           router.replace("/(tabs)");
         } else {
           setModalVisible(ResponseEnum.FAIL);
@@ -55,9 +57,7 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    
+  const handleSubmit = (e: any) => {    
     if (validateInputs()) {
       handleLogin(formData);
     }

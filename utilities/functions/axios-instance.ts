@@ -1,8 +1,6 @@
 import axios from "axios";
-import secureLocalStorage from "react-secure-storage";
-import { API_URLS, BASE, VERSION } from "../constants/api-endpoints";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants/global-data";
 import { getAccessToken, getRefreshToken } from "./crud-tokens-storage";
+import { BASE, VERSION } from "@/constants/api-endpoints";
 
 const API_BASE_URL = `${BASE}/${VERSION}`;
 
@@ -19,12 +17,12 @@ axiosInstance.interceptors.request.use(
     const accessToken = getAccessToken();
     const refreshToken = getRefreshToken();
 
-    if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
-    }
-    if (refreshToken) {
-      config.headers["x-refresh-token"] = refreshToken;
-    }
+    // if (accessToken) {
+    //   config.headers["Authorization"] = `Bearer ${accessToken}`;
+    // }
+    // if (refreshToken) {
+    //   config.headers["x-refresh-token"] = refreshToken;
+    // }
 
     return config;
   },
@@ -37,8 +35,8 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     if (error.response?.status === 401) {
       console.warn("Unauthorized - Token might be expired");
-      secureLocalStorage.removeItem(ACCESS_TOKEN);
-      secureLocalStorage.removeItem(REFRESH_TOKEN);
+      // secureLocalStorage.removeItem(ACCESS_TOKEN);
+      // secureLocalStorage.removeItem(REFRESH_TOKEN);
       window.location.href = "/login";
     }
     return Promise.reject(error);

@@ -1,13 +1,19 @@
-import { View } from 'react-native'
+import { View, Image } from 'react-native'
 import React from 'react'
-import { ThemedText } from '../ThemedText'
 
 const Logo = () => {
   return (
     <View>
-      <ThemedText>LOGO</ThemedText>
+      <Image 
+        style={{
+          width: 60,
+          height: 30
+        }}
+        source={require('@/assets/images/logo.png')} 
+        />
     </View>
   )
 }
 
-export default Logo
+export default Logo;
+

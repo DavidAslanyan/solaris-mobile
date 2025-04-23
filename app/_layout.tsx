@@ -7,6 +7,7 @@ import 'react-native-reanimated';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeCustomProvider } from './contexts/ThemeContext';
 import { LogBox } from 'react-native';
+import useSocket from '@/utilities/hooks/useSocket';
 
 
 LogBox.ignoreLogs([
@@ -17,6 +18,7 @@ LogBox.ignoreLogs([
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  useSocket();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
